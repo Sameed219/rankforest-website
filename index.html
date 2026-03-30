@@ -1,0 +1,1756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rank Forest — Amazon PPC Management</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script>document.documentElement.style.opacity='0';</script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --forest:#1a2a1a;--forest-medium:#2d4a2d;--forest-light:#3d6b3d;
+  --lime:#c8f31d;--lime-soft:#d4f54d;--lime-pale:#f0fbc4;--lime-dark:#9abf00;
+  --white:#ffffff;--off-white:#f8f9f6;--light-gray:#f0f1ed;--mid-gray:#94958f;--dark-gray:#4a4b47;
+  --border:#e8e9e4;--border-mid:#d4d5cf;
+  --text-primary:#1a1a1a;--text-secondary:#5a5b56;--text-muted:#94958f;
+  --radius:12px;--radius-sm:8px;--radius-lg:20px;--radius-xl:28px;--radius-pill:100px;
+  --shadow-sm:0 1px 3px rgba(0,0,0,0.06);--shadow:0 4px 20px rgba(0,0,0,0.08);--shadow-lg:0 16px 56px rgba(0,0,0,0.12);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--text-primary);background:var(--white);overflow-x:hidden}
+.container{max-width:1180px;margin:0 auto;padding:0 40px}
+
+/* NAV */
+#main-nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  height:68px;display:flex;align-items:center;
+  background:transparent;
+  transition:background 0.3s ease,box-shadow 0.3s ease;
+}
+#main-nav.scrolled{
+  background:rgba(248,249,246,0.6);
+  backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  box-shadow:0 1px 0 rgba(0,0,0,0.07);
+}
+.nav-inner{
+  display:flex;align-items:center;justify-content:space-between;
+  width:100%;padding:0 40px;
+  position:relative;
+}
+/* Logo */
+.nav-logo{display:flex;align-items:center;text-decoration:none;position:relative;z-index:1}
+.nav-logo img{height:62px;width:auto;display:block;}
+/* Centered pill — absolutely centered in nav */
+.nav-pill{
+  display:flex;align-items:center;
+  background:#1a2a1a;
+  border-radius:100px;
+  padding:5px 6px;
+  gap:2px;
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+}
+.nav-pill a{
+  display:block;padding:8px 18px;
+  font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-size:0.82rem;font-weight:600;
+  color:rgba(255,255,255,0.8);
+  text-decoration:none;border-radius:100px;
+  transition:background 0.2s,color 0.2s;
+  white-space:nowrap;
+}
+.nav-pill a:hover,.nav-pill a.active{
+  background:rgba(255,255,255,0.12);
+  color:#fff;
+}
+/* Right tool button — lime green */
+.nav-tool-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  background:#c2e03a;border:none;
+  color:#1a2a1a;cursor:pointer;
+  font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-size:0.82rem;font-weight:700;
+  padding:10px 22px;border-radius:100px;
+  text-decoration:none;
+  transition:background 0.2s,transform 0.2s;
+  white-space:nowrap;
+  position:relative;z-index:1;
+}
+.nav-tool-btn:hover{background:#cfe84d;transform:scale(1.04)}
+.nav-tool-btn .arr{display:inline-block;transition:transform 0.2s}
+.nav-tool-btn:hover .arr{transform:translateX(3px)}
+/* Hamburger */
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;background:none;border:none}
+.hamburger span{display:block;width:22px;height:2px;background:#1a2a1a;border-radius:2px;transition:opacity 0.2s}
+/* Mobile overlay */
+.mob-overlay{
+  display:none;position:fixed;inset:0;background:#1a2a1a;z-index:990;
+  flex-direction:column;align-items:center;justify-content:center;gap:4px;
+}
+.mob-overlay.open{display:flex}
+.mob-overlay a{font-size:1.25rem;font-weight:700;color:rgba(255,255,255,0.85);text-decoration:none;padding:14px 28px;transition:color 0.15s}
+.mob-overlay a:hover{color:white}
+.mob-overlay .nav-tool-btn{
+  margin-top:20px;font-size:0.95rem;padding:13px 32px;
+  border-color:rgba(255,255,255,0.4);color:white;
+}
+.mob-overlay .nav-tool-btn:hover{background:rgba(255,255,255,0.1);color:white}
+.mob-close{position:absolute;top:24px;right:24px;background:none;border:none;font-size:1.5rem;cursor:pointer;color:rgba(255,255,255,0.7)}
+.mob-close:hover{color:white}
+
+/* Hero social proof trust strip */
+.trust-strip{
+  display:flex!important;align-items:center!important;justify-content:center!important;gap:14px!important;margin-bottom:28px;flex-wrap:nowrap!important;
+}
+.trust-logos{display:flex;align-items:center}
+.trust-logo{
+  width:40px;height:40px;border-radius:50%;
+  object-fit:cover;border:2.5px solid #ffffff;
+  box-shadow:0 1px 5px rgba(0,0,0,0.12);
+  flex-shrink:0;background:#f0f1ed;
+  margin-left:-10px;position:relative;
+}
+.trust-logo:first-child{margin-left:0}
+.trust-more{
+  width:40px;height:40px;border-radius:50%;
+  background:#c8f31d;color:#1a2a1a;
+  font-size:0.75rem;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  margin-left:-10px;border:2.5px solid #ffffff;
+  font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  flex-shrink:0;
+}
+.trust-proof{display:flex;flex-direction:column;align-items:flex-start;gap:4px;}
+.trust-strip .trust-stars{color:#f5a623!important;font-size:18px!important;letter-spacing:3px!important;line-height:1!important;display:inline-flex!important;align-items:center!important;}
+.hero-trust .trust-stars{font-size:0.72rem!important;}
+.trust-label{font-size:0.88rem!important;font-weight:600!important;color:#5a5b56!important;white-space:nowrap!important;line-height:1!important;}
+
+/* HERO VIEWPORT — full-height first screen */
+#hero-viewport{
+  height:100vh;
+  min-height:600px;
+  display:flex;
+  flex-direction:column;
+}
+
+/* HERO */
+#hero{
+  background:var(--white);
+  flex:1;
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;
+}
+/* Dot grid texture */
+#hero::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(circle,rgba(45,74,45,0.055) 1.5px,transparent 1.5px);
+  background-size:28px 28px;
+  mask-image:radial-gradient(ellipse 80% 90% at 50% 50%,black 20%,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse 80% 90% at 50% 50%,black 20%,transparent 75%);
+}
+/* Lime warmth glow */
+#hero::after{
+  content:'';position:absolute;
+  width:700px;height:360px;top:-60px;left:50%;transform:translateX(-50%);
+  background:radial-gradient(ellipse,rgba(200,243,29,0.09) 0%,transparent 68%);
+  pointer-events:none;
+}
+/* Spacer = nav height (72px fixed), keeps content below the fixed bar */
+.hero-nav-spacer{height:68px;flex-shrink:0;pointer-events:none}
+/* Content centered in remaining space below nav */
+.hero-content{
+  flex:1;
+  position:relative;z-index:2;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:20px 40px 40px;width:100%;
+}
+
+/* Animations */
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes heroFadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulseDot{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,0.4)}50%{box-shadow:0 0 0 6px rgba(34,197,94,0)}}
+@keyframes growBar{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes underlineIn{to{transform:scaleX(1)}}
+@keyframes sweepIn{to{transform:scaleX(1)}}
+
+.pulse-dot{width:6px;height:6px;border-radius:50%;background:#22c55e;flex-shrink:0;animation:pulseDot 2s infinite}
+
+/* h1 */
+h1{
+  font-size:clamp(3rem,6.4vw,5.4rem);line-height:0.98;letter-spacing:-3px;
+  max-width:none;margin-bottom:22px;
+  font-weight:800;color:#1a1a1a;
+}
+/* Hero rotating word — JS per-character stagger */
+.hero-word-window{
+  display:inline-flex;align-items:flex-end;overflow:hidden;vertical-align:bottom;
+  position:relative;height:1.1em;padding:2px 12px;box-sizing:border-box;
+  background:rgba(200,243,29,0.25);border-radius:8px;
+  transition:width 0.4s cubic-bezier(0.4,0,0.2,1);white-space:nowrap;
+}
+.hero-char-wrap{display:inline-block;overflow:visible;height:1.1em;line-height:1.1;vertical-align:bottom;}
+.hero-char-slot{
+  display:inline-block;
+  font-family:'Instrument Serif',Georgia,'Times New Roman',serif;
+  font-style:italic;font-weight:400;color:#1a2a1a;line-height:1.1;
+}
+@keyframes heroCharIn{from{transform:translateY(110%);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes heroCharOut{from{transform:translateY(0);opacity:1}to{transform:translateY(-110%);opacity:0}}
+
+/* Subheading */
+.hero-subline{
+  font-size:1.18rem;font-weight:400;color:#6b7280;
+  line-height:1.45;margin-bottom:36px;
+}
+.hero-subline .hl{
+  font-weight:700;color:#1a1a1a;
+  position:relative;display:inline;
+}
+.hero-subline .hl::after{
+  content:'';position:absolute;
+  left:0;right:0;bottom:-2px;height:2.5px;
+  background:#c2e03a;border-radius:1px;
+  transform:scaleX(0);transform-origin:left;
+  animation:sweepIn 0.4s ease-out 1.2s forwards;
+}
+
+/* CTA Buttons */
+.hero-btns{
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:20px;
+}
+.btn-primary{
+  background:#c2e03a;color:#1a2a1a;border:none;cursor:pointer;
+  font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:1rem;font-weight:700;
+  padding:17px 38px;border-radius:var(--radius-pill);text-decoration:none;
+  display:inline-flex;align-items:center;gap:8px;letter-spacing:-0.3px;
+  transition:background 0.2s,transform 0.2s,box-shadow 0.2s;
+}
+.btn-primary:hover{
+  background:#cfe84d;transform:translateY(-2px);
+  box-shadow:0 8px 28px rgba(194,224,58,0.4);
+}
+.btn-primary .arr,.btn-lime .arr{display:inline-block;transition:transform 0.2s}
+.btn-primary:hover .arr,.btn-lime:hover .arr{transform:translateX(4px)}
+.btn-ghost{
+  background:transparent;color:var(--forest);
+  border:1.5px solid rgba(26,42,26,0.22);cursor:pointer;
+  font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:0.97rem;font-weight:600;
+  padding:16px 28px;border-radius:var(--radius-pill);text-decoration:none;
+  display:inline-flex;align-items:center;
+  transition:border-color 0.2s,background 0.2s,transform 0.2s;
+}
+.btn-ghost:hover{border-color:var(--forest);background:rgba(45,74,45,0.05);transform:translateY(-1px)}
+
+/* Trust row */
+.hero-trust{
+  display:flex;align-items:center;gap:8px;justify-content:center;flex-wrap:wrap;
+  font-size:0.79rem;font-weight:500;color:var(--text-muted);
+}
+.trust-sep{color:var(--border-mid);font-size:0.9rem}
+.trust-stars{color:#f5a623;letter-spacing:1px;font-size:0.72rem}
+
+/* MARQUEE */
+#marquee-sec{
+  background:#1a2a1a;
+  border-top:1px solid rgba(200,243,29,0.08);border-bottom:1px solid rgba(200,243,29,0.08);
+  padding:20px 0;overflow:hidden;position:relative;
+}
+#marquee-sec::before,#marquee-sec::after{
+  content:'';position:absolute;top:0;bottom:0;z-index:2;width:100px;pointer-events:none;
+}
+#marquee-sec::before{left:0;background:linear-gradient(90deg,#1a2a1a 20%,transparent)}
+#marquee-sec::after{right:0;background:linear-gradient(-90deg,#1a2a1a 20%,transparent)}
+.mq-track{display:flex;width:max-content;align-items:center}
+.mq-item{
+  display:flex;align-items:center;gap:6px;
+  padding:0 28px;white-space:nowrap;
+  font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.65);
+  letter-spacing:0.3px;
+}
+.mq-item::after{content:'·';color:rgba(255,255,255,0.22);font-size:0.6rem;margin-left:0;line-height:1}
+.mq-item strong{color:#c8f31d;font-weight:800;}
+.mq-stars{color:#f5a623;}
+
+/* SECTION UTILS */
+.section-tag{display:inline-flex;align-items:center;gap:8px;margin-bottom:20px}
+.tag-bar{width:18px;height:3px;background:var(--lime);border-radius:2px}
+.tag-txt{font-family:'Space Mono','Courier New',monospace;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted)}
+.tag-txt-dk{color:rgba(248,249,246,0.55)}
+.sec-center{text-align:center;display:flex;flex-direction:column;align-items:center}
+h2 .sans{font-weight:800}
+h2 .serif,.pp-headline .serif{font-family:'Instrument Serif',Georgia,'Times New Roman',serif;font-style:italic;font-weight:400;}
+.mobile-br{display:none;}
+
+
+
+/* HOW IT WORKS */
+#how{background:#ffffff;padding:60px 0 80px}
+#how h2{font-size:clamp(1.8rem,3.5vw,3rem);letter-spacing:-1.2px;margin-bottom:14px}
+#how h2 .sans,#how h2 .serif{color:var(--forest)}
+.how-sub{font-size:1.05rem;color:var(--text-secondary);max-width:520px;margin-bottom:40px}
+.steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.step-card{background:#ffffff;border:1.5px solid #e8e9e4;border-radius:14px;padding:36px 32px;position:relative;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.04);}
+.step-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--lime),var(--lime-dark))}
+.step-lbl{font-family:'Space Mono','Courier New',monospace;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted);margin-bottom:8px}
+.step-num{font-size:2.5rem;font-weight:800;color:var(--lime-dark);letter-spacing:-1px;line-height:1;margin-bottom:14px}
+.step-title{font-size:1.15rem;font-weight:700;color:var(--forest);letter-spacing:-0.5px;margin-bottom:10px}
+.step-desc{font-size:0.88rem;color:var(--text-secondary);line-height:1.65}
+
+/* BOLD STATEMENT / CTA */
+#statement{background:#1a2a1a;padding:100px 0;text-align:center;border-radius:80px;}
+.statement-inner{display:flex;flex-direction:column;align-items:center;position:relative;z-index:1;}
+.statement-accent{width:40px;height:3px;background:#c8f31d;border-radius:2px;margin-bottom:32px;}
+.statement-hl{font-size:clamp(2.2rem,4vw,3.5rem);font-weight:800;color:#ffffff;letter-spacing:-1.5px;line-height:1.15;margin-bottom:20px;}
+.statement-hl .serif{font-family:'Instrument Serif',Georgia,'Times New Roman',serif;font-style:italic;font-weight:400;}
+.statement-sub{font-size:1.05rem;color:rgba(255,255,255,0.65);line-height:1.7;max-width:580px;margin:0 auto 40px;}
+.statement-btns{display:flex;gap:16px;justify-content:center;align-items:center;flex-wrap:wrap;}
+.btn-stmt-primary{background:#c8f31d;color:#1a2a1a;border:none;cursor:pointer;font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:0.95rem;font-weight:700;padding:16px 36px;border-radius:12px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:background 0.2s,transform 0.2s,box-shadow 0.2s;}
+.btn-stmt-primary:hover{background:#b8e310;transform:translateY(-2px);box-shadow:0 8px 24px rgba(200,243,29,0.3);}
+.btn-stmt-ghost{background:transparent;color:#ffffff;border:1.5px solid rgba(255,255,255,0.35);cursor:pointer;font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:0.95rem;font-weight:600;padding:16px 36px;border-radius:12px;text-decoration:none;display:inline-flex;align-items:center;transition:background 0.2s,color 0.2s,border-color 0.2s;}
+.btn-stmt-ghost:hover{background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.6);}
+.statement-trust{font-size:0.82rem;color:rgba(255,255,255,0.4);margin-top:24px;letter-spacing:0.3px;}
+
+
+/* TABS */
+/* FAQ */
+/* FAQ */
+#faq{background:#ffffff;padding:80px 0 100px;position:relative;overflow:hidden;}
+#faq::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle,rgba(26,42,26,0.045) 1.5px,transparent 1.5px);background-size:28px 28px;z-index:0;}
+#faq .container{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;}
+.faq-inner{max-width:800px;width:100%;}
+.faq-item{background:#ffffff;border:1.5px solid #e8e9e4;border-radius:14px;overflow:hidden;cursor:pointer;transition:transform 0.25s ease,box-shadow 0.25s ease,border-color 0.25s ease;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,0.04);}
+.faq-item:last-child{margin-bottom:0}
+.faq-question{display:flex;justify-content:space-between;align-items:center;padding:22px 28px;}
+.faq-q-text{font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:1rem;font-weight:600;color:#1a2a1a;padding-right:8px;}
+.faq-icon{color:#1a2a1a;font-size:1.4rem;font-weight:300;line-height:1;flex-shrink:0;transition:transform 0.3s ease;}
+.faq-item.open .faq-icon{transform:rotate(45deg)}
+.faq-item:hover{border-color:#c8f31d;transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.06);}
+.faq-item.open{border-color:#c8f31d;transform:translateY(0);box-shadow:0 6px 24px rgba(0,0,0,0.08);}
+.faq-answer{max-height:0;overflow:hidden;transition:max-height 0.35s ease}
+.faq-item.open .faq-answer{max-height:300px}
+.faq-answer-inner{padding:0 28px 22px;font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:0.92rem;line-height:1.7;color:#5a5b56;}
+
+/* CTA */
+#cta{background:var(--forest);padding:100px 0;text-align:center;position:relative;border-radius:80px 80px 0 0;clip-path:inset(0 0 -9999px 0 round 80px 80px 0 0);}
+#cta::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:0;background:radial-gradient(circle,rgba(200,243,29,0.06) 1.5px,transparent 1.5px);background-size:28px 28px;}
+#statement{position:relative;}
+#statement::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:0;background:radial-gradient(circle,rgba(200,243,29,0.06) 1.5px,transparent 1.5px);background-size:28px 28px;}
+.rings{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;width:0;height:0}
+.ring{position:absolute;border-radius:50%;border:1px solid rgba(200,243,29,0.07);transform:translate(-50%,-50%)}
+#cta .container{position:relative;z-index:2}
+#cta h2{font-size:clamp(2.4rem,4.5vw,3.8rem);letter-spacing:-2px;margin-bottom:20px}
+#cta h2 .sans{color:white}
+#cta h2 .serif{color:var(--lime)}
+.cta-sub{font-size:1.05rem;color:rgba(248,249,246,0.6);max-width:480px;margin:0 auto 36px;line-height:1.65}
+.cta-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:20px}
+.btn-lime{
+  background:var(--lime);color:var(--forest);border:none;cursor:pointer;
+  font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:0.95rem;font-weight:800;
+  padding:16px 36px;border-radius:var(--radius-pill);text-decoration:none;
+  display:inline-flex;align-items:center;gap:6px;
+  transition:background 0.2s,transform 0.2s,box-shadow 0.2s;
+}
+.btn-lime:hover{background:var(--lime-soft);transform:translateY(-2px);box-shadow:0 8px 28px rgba(200,243,29,0.3)}
+.btn-ghost-dk{
+  background:transparent;color:rgba(255,255,255,0.8);border:1px solid rgba(255,255,255,0.18);cursor:pointer;
+  font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:0.95rem;font-weight:600;
+  padding:15px 28px;border-radius:var(--radius-pill);text-decoration:none;
+  display:inline-flex;align-items:center;transition:border-color 0.2s,background 0.2s,color 0.2s;
+}
+.btn-ghost-dk:hover{border-color:rgba(255,255,255,0.4);background:rgba(255,255,255,0.06);color:white}
+.cta-fine{font-size:0.75rem;color:rgba(248,249,246,0.35)}
+
+/* FOOTER */
+/* ===== MINIMAL FOOTER BAR — WHITE ===== */
+footer{background:#ffffff;border-top:1px solid #e8e9e4;padding:0;margin-top:0;}
+.footer-bar{max-width:1180px;margin:0 auto;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;gap:24px;}
+.footer-logo{display:flex;align-items:center;text-decoration:none;flex-shrink:0;}
+.footer-logo-img{height:50px;width:auto;}
+.footer-nav{display:flex;align-items:center;gap:32px;flex-wrap:wrap;justify-content:center;}
+.footer-nav a{font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:0.8rem;font-weight:600;color:#1a2a1a;text-decoration:none;text-transform:uppercase;letter-spacing:0.8px;white-space:nowrap;position:relative;}
+.footer-nav a::after{content:'';position:absolute;bottom:-2px;left:0;width:100%;height:1.5px;background:#c8f31d;transform:scaleX(0);transform-origin:left center;transition:transform 0.3s ease;}
+.footer-nav a:hover::after{transform:scaleX(1);}
+.footer-nav a:hover{color:#1a2a1a;}
+.footer-social{display:flex;align-items:center;gap:14px;flex-shrink:0;}
+.footer-soc{display:flex;align-items:center;justify-content:center;color:#1a2a1a;text-decoration:none;transition:color 0.2s;}
+.footer-soc:hover{color:#c8f31d;}
+.footer-soc svg{width:22px;height:22px;display:block;}
+/* CTA Trust Strip */
+.cta-trust-strip{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:28px;}
+.cta-trust-logos{display:flex;align-items:center;}
+.cta-trust-logo{width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.2);margin-left:-8px;background:#2d4a2d;}
+.cta-trust-logo:first-child{margin-left:0;}
+.cta-trust-more{width:36px;height:36px;border-radius:50%;background:#c8f31d;color:#1a2a1a;font-size:0.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin-left:-8px;border:2px solid rgba(255,255,255,0.2);font-family:'Plus Jakarta Sans',sans-serif;}
+.cta-trust-proof{display:flex;flex-direction:column;align-items:flex-start;gap:3px;}
+.cta-trust-stars{color:#f5a623;font-size:14px;letter-spacing:2px;line-height:1;}
+.cta-trust-label{font-size:0.78rem;font-weight:600;color:rgba(255,255,255,0.5);white-space:nowrap;line-height:1;}
+
+/* PAIN POINTS SECTION */
+#pain-points{
+  background:#ffffff;
+  padding:80px 0 0;
+}
+#pain-points .pp-inner{
+  max-width:1100px;margin:0 auto;padding:0 40px;
+  display:flex;flex-direction:column;align-items:center;
+}
+#pain-points .pp-headline{
+  font-size:clamp(1.8rem,3vw,2.8rem);font-weight:800;
+  color:#1a2a1a;text-align:center;line-height:1.15;
+  letter-spacing:-1px;margin-bottom:16px;
+}
+#pain-points .pp-headline .pp-perfect{
+  font-family:'Instrument Serif',Georgia,'Times New Roman',serif;font-style:italic;
+  color:#1a2a1a;font-weight:400;
+  background:rgba(200,243,29,0.22);border-radius:3px;padding:0 5px;
+  position:relative;display:inline;
+}
+#pain-points .pp-sub{
+  font-size:1.05rem;font-weight:400;color:#666666;
+  text-align:center;margin-bottom:48px;
+}
+.pp-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:20px;width:100%;
+}
+.pp-card{
+  background:#fff;border:1.5px solid #e8e9e4;
+  border-radius:14px;padding:28px 30px;
+  min-height:120px;
+  display:flex;align-items:center;gap:16px;
+  box-shadow:0 1px 4px rgba(0,0,0,0.04);
+}
+.pp-check{
+  width:28px;height:28px;border-radius:50%;
+  background:#e8f5e0;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.pp-check svg{display:block}
+.pp-text{
+  font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-size:0.95rem;font-weight:500;
+  color:#1a1a1a;line-height:1.6;
+}
+.pp-bottom-cta{
+  padding:64px 0 64px;
+  font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-size:1.15rem;font-weight:700;color:#1a2a1a;
+  text-decoration:none;display:block;text-align:center;
+}
+.pp-bottom-cta .arr{
+  display:inline-block;
+  animation:bounceDown 1.5s ease-in-out infinite;
+}
+@keyframes bounceDown{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(6px);}
+}
+
+/* SERVICES SECTION */
+#services{
+  background:#1a2a1a;
+  padding:80px 0 80px;
+  position:relative;overflow:hidden;
+  border-radius:80px 80px 0 0;
+}
+#services::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(circle,rgba(200,243,29,0.06) 1.5px,transparent 1.5px);
+  background-size:28px 28px;
+}
+#services .svc-inner{
+  max-width:1100px;margin:0 auto;padding:0 40px;
+  display:flex;flex-direction:column;align-items:center;
+}
+#services .svc-headline{
+  font-size:clamp(2rem,3.5vw,3.2rem);font-weight:800;
+  color:#ffffff;text-align:center;
+  letter-spacing:-1px;line-height:1.1;
+  margin-bottom:16px;
+}
+#services .svc-headline .svc-italic{
+  font-family:'Instrument Serif',Georgia,'Times New Roman',serif;font-style:italic;font-weight:400;
+}
+#services .svc-sub{
+  font-size:1.05rem;color:rgba(248,249,246,0.65);
+  text-align:center;line-height:1.7;
+  max-width:650px;margin-bottom:50px;
+}
+.svc-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:20px;width:100%;
+}
+.svc-card{
+  background:rgba(255,255,255,0.06);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:16px;padding:36px 32px;
+  min-height:120px;
+  position:relative;overflow:hidden;
+  transition:transform 0.25s ease,box-shadow 0.25s ease,border-color 0.25s ease,background 0.25s ease;
+}
+@supports not (backdrop-filter:blur(16px)){
+  .svc-card{background:rgba(255,255,255,0.08);}
+}
+.svc-card.svc-full{
+  grid-column:1 / -1;min-height:auto;
+}
+.svc-title{
+  font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-size:1.15rem;font-weight:700;
+  color:#ffffff;margin-bottom:12px;
+  position:relative;z-index:1;
+}
+.svc-lime{color:#4a7a0a;}
+.svc-lime-dk{color:#c8f31d;}
+.res-lime{color:#c8f31d;}
+.svc-desc{
+  font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-size:0.92rem;line-height:1.65;
+  color:rgba(255,255,255,0.6);font-weight:400;
+  position:relative;z-index:1;
+}
+#services .svc-inner{position:relative;z-index:1}
+@media(max-width:768px){
+  .svc-grid{grid-template-columns:1fr}
+  .svc-card.svc-full{grid-column:auto}
+  #services .svc-inner{padding:0 20px}
+}
+
+/* DOT TEXTURE — reusable for all light-background sections */
+.dot-texture{position:relative;overflow:hidden}
+.dot-texture::before{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(circle,rgba(45,74,45,0.055) 1.5px,transparent 1.5px);
+  background-size:28px 28px;
+}
+/* Dark sections need lime-tinted dots to be visible */
+#services::before,#results::before,#statement::before,#cta::before{
+  background-image:radial-gradient(circle,rgba(200,243,29,0.08) 1.5px,transparent 1.5px);
+}
+/* Ensure inner wrappers sit above the dot layer */
+#pain-points .pp-inner,#how .container,#testi-shots .testi-shots-inner,#free-tools .ft-inner{position:relative;z-index:1}
+/* Remove dot texture from ALL card/item elements */
+.pp-card,.svc-card,.step-card,.tool-card,
+.testimonial-item,[class*="-card"],[class*="-item"]{background-image:none!important;}
+
+/* RESULTS SECTION */
+#results{
+  background:#1a2a1a;
+  padding:80px 0 80px;
+  overflow:hidden;
+  border-radius:0 0 80px 80px;
+  position:relative;
+}
+#results::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(circle,rgba(200,243,29,0.06) 1.5px,transparent 1.5px);
+  background-size:28px 28px;
+}
+#results .res-inner{
+  max-width:1100px;margin:0 auto;padding:0 40px;
+  display:flex;flex-direction:column;align-items:center;
+  margin-bottom:50px;position:relative;z-index:1;
+  position:relative;z-index:1;
+}
+.res-tag{
+  display:inline-block;
+  background:#c2e03a;color:#1a2a1a;
+  font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-size:0.75rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:2px;
+  padding:8px 20px;border-radius:100px;
+  border:none;
+  margin-bottom:24px;
+}
+.res-headline{
+  font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-size:clamp(2rem,3.5vw,3.2rem);font-weight:800;
+  color:#ffffff;text-align:center;
+  letter-spacing:-1px;line-height:1.1;
+  margin-bottom:16px;
+}
+.res-headline .res-italic{
+  font-family:'Instrument Serif',Georgia,'Times New Roman',serif;font-style:italic;font-weight:400;
+}
+.res-sub{
+  font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-size:1.05rem;color:rgba(255,255,255,0.55);
+  text-align:center;line-height:1.7;
+  max-width:600px;margin:0;
+}
+/* Carousel */
+.res-carousel{width:100%;overflow:hidden;}
+.res-track{
+  display:flex;gap:20px;
+  width:max-content;
+  will-change:transform;
+}
+.res-card{
+  width:480px;flex-shrink:0;
+  border-radius:16px;
+  overflow:hidden;
+  pointer-events:auto;
+  cursor:pointer;
+}
+.res-card img{
+  width:100%;height:auto;display:block;
+  border-radius:16px;
+}
+@media(max-width:768px){
+  .res-card{width:320px;}
+  #results .res-inner{padding:0 20px;}
+}
+#how .container,#features .container,#statement .container{position:relative;z-index:1}
+#statement .statement-inner{position:relative;z-index:1}
+
+/* SCREENSHOT TESTIMONIALS */
+#testi-shots{background:#ffffff;padding:80px 0 100px;}
+#testi-shots .testi-shots-inner{max-width:1100px;margin:0 auto;padding:0 40px;display:flex;flex-direction:column;align-items:center;}
+.testi-shots-sub{font-size:1.05rem;color:#666666;max-width:700px;text-align:center;line-height:1.7;margin-bottom:48px;}
+.testi-shots-hl{font-size:clamp(2rem,3.5vw,3rem);font-weight:800;color:#1a2a1a;text-align:center;letter-spacing:-1px;line-height:1.15;margin-bottom:14px;}
+.testi-shots-hl .serif{font-family:'Instrument Serif',Georgia,'Times New Roman',serif;font-style:italic;font-weight:400;}
+.testimonial-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:1100px;margin:0 auto;width:100%;}
+.testimonial-item{display:flex;align-items:center;justify-content:center;border-radius:16px;overflow:hidden;border:2px solid #e0e1dc;box-shadow:0 4px 16px rgba(0,0,0,0.06);cursor:pointer;transition:transform 0.25s ease,box-shadow 0.25s ease,border-color 0.25s ease;}
+.testimonial-item img{cursor:pointer;}
+.testimonial-item:hover{border-color:#c8f31d;transform:translateY(-3px);box-shadow:0 14px 40px rgba(0,0,0,0.10);}
+/* LIGHTBOX */
+.lightbox-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:9999;justify-content:center;align-items:center;cursor:default;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);}
+.lightbox-img{max-width:90%;max-height:90vh;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,0.5);object-fit:contain;animation:lightbox-in 0.3s ease;}
+@keyframes lightbox-in{from{opacity:0;transform:scale(0.9);}to{opacity:1;transform:scale(1);}}
+.lightbox-close{position:absolute;top:24px;right:32px;background:none;border:none;color:#ffffff;font-size:2.5rem;cursor:pointer;font-weight:300;line-height:1;opacity:0.7;transition:opacity 0.2s;}
+.lightbox-close:hover{opacity:1;}
+.testimonial-item--dark{border-color:#333333;}
+.testimonial-item img{width:100%;height:auto;display:block;margin:0;}
+@media(max-width:768px){
+  .testimonial-grid{grid-template-columns:1fr;padding:0 20px;}
+  #testi-shots .testi-shots-inner{padding:0 20px;}
+}
+
+/* FREE TOOLS SECTION */
+#free-tools{background:#ffffff;padding:80px 0 100px;position:relative;overflow:hidden;}
+#free-tools::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle,rgba(26,42,26,0.045) 1.5px,transparent 1.5px);background-size:28px 28px;z-index:0;}
+#free-tools .ft-inner{
+  max-width:960px;margin:0 auto;padding:0 40px;
+  display:flex;flex-direction:column;align-items:center;
+  position:relative;z-index:1;
+}
+.ft-headline{
+  font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-size:clamp(2rem,3.5vw,3rem);font-weight:800;
+  color:#1a2a1a;text-align:center;
+  letter-spacing:-1px;line-height:1.2;
+  margin-bottom:14px;
+}
+.ft-headline .ft-italic{
+  font-family:'Instrument Serif',Georgia,'Times New Roman',serif;font-style:italic;font-weight:400;
+}
+.ft-sub{
+  font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-size:1.05rem;color:#5a5b56;
+  text-align:center;line-height:1.7;
+  max-width:500px;
+  margin:0 0 48px;
+}
+/* 2×2 equal grid */
+.tools-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+  max-width:860px;
+  width:100%;
+  margin:0 auto;
+}
+/* Card */
+.tool-card{
+  background:#ffffff;
+  border:1.5px solid #e0e1dc;
+  border-radius:16px;
+  padding:32px 28px;
+  position:relative;
+  transition:transform 0.25s ease,box-shadow 0.25s ease,border-color 0.25s ease;
+  box-shadow:0 2px 12px rgba(0,0,0,0.05);
+  display:flex;flex-direction:column;
+}
+.tool-card:hover{
+  border-color:#c8f31d;
+  transform:translateY(-3px);
+  box-shadow:0 12px 32px rgba(0,0,0,0.08);
+}
+/* Status badge */
+.tool-badge{
+  position:absolute;top:16px;right:28px;
+  font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;
+  padding:5px 14px;border-radius:6px;
+  white-space:nowrap;
+}
+.tool-badge-live{background:#1a2a1a;color:#c8f31d;}
+.tool-badge-soon{background:#c8f31d;color:#1a2a1a;}
+/* Icon */
+.tool-icon{
+  width:48px;height:48px;border-radius:12px;
+  background:#1a2a1a;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-weight:700;font-size:0.9rem;color:#c8f31d;
+  flex-shrink:0;margin-bottom:8px;
+}
+/* Text */
+.tool-name{
+  font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-size:1.15rem;font-weight:700;color:#1a2a1a;
+}
+.tool-desc{
+  font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-size:0.88rem;line-height:1.6;color:#94958f;
+  margin-bottom:0;
+}
+/* Card body — vertically centers content within the card */
+.tool-card-body{flex:1;display:flex;flex-direction:column;justify-content:center;gap:10px;}
+/* Bottom row: button/notify left, optional logo right */
+.tool-card-footer{display:flex;justify-content:space-between;align-items:center;padding-top:20px;}
+.tool-h10-wrap{display:flex;align-items:center;justify-content:center;}
+.tool-h10-img{height:44px;width:auto;opacity:1;display:block;}
+.tool-cta-btn:focus,.tool-notify-link:focus,.tool-cta-btn:active,.tool-notify-link:active{outline:none;}
+/* CTA button (live) */
+.tool-cta-btn{
+  display:inline-block;align-self:center;
+  background:#c8f31d;color:#1a2a1a;
+  font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-size:0.88rem;font-weight:700;
+  text-decoration:none;
+  padding:12px 28px;border-radius:10px;
+  transition:background 0.2s,transform 0.2s,box-shadow 0.2s;
+}
+.tool-cta-btn:hover{background:#b8e310;transform:translateY(-2px);box-shadow:0 6px 20px rgba(200,243,29,0.3);}
+/* Notify link (coming soon) */
+.tool-notify-link{
+  display:inline-block;
+  font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-size:0.85rem;font-weight:600;color:#1a2a1a;
+  text-decoration:none;
+  transition:color 0.2s,border-color 0.2s;
+  border-bottom:1.5px solid transparent;
+  padding-bottom:1px;
+}
+.tool-notify-link:hover{color:#1a2a1a;text-decoration:underline;text-underline-offset:3px;}
+.tool-notify-link:focus,.tool-notify-link:active{outline:none;border-bottom-color:transparent;}
+@media(max-width:768px){
+  .tools-grid{grid-template-columns:1fr;}
+  #free-tools .ft-inner{padding:0 20px;}
+  #results{border-radius:0 0 40px 40px;}
+  #services{border-radius:40px 40px 0 0;}
+  #cta{border-radius:40px;}
+  #statement{border-radius:40px;}
+  #faq .faq-inner{padding:0 20px;}
+  /* Section vertical padding */
+  #pain-points{padding:50px 0 0;}
+  #services{padding:50px 0 50px;}
+  #results{padding:50px 0 50px;}
+  #testi-shots{padding:50px 0 60px;}
+  #free-tools{padding:50px 0;}
+  #how{padding:40px 0 50px;}
+  #statement{padding:60px 0;}
+  #cta{padding:60px 0;}
+  #faq{padding:50px 0 60px;}
+  /* Testimonials padding */
+  #testi-shots .testi-shots-inner{padding:0 20px;}
+  /* Carousel touch-swipe */
+  .res-carousel{overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;padding-bottom:8px;}
+  .res-card{scroll-snap-align:start;}
+}
+
+/* SCROLL REVEAL */
+.reveal{opacity:0;transform:translateY(36px);transition:opacity 0.75s cubic-bezier(0.22,1,0.36,1),transform 0.75s cubic-bezier(0.22,1,0.36,1)}
+.reveal.is-visible{opacity:1;transform:none}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity 0.75s cubic-bezier(0.22,1,0.36,1),transform 0.75s cubic-bezier(0.22,1,0.36,1)}
+.reveal-left.is-visible{opacity:1;transform:none}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity 0.75s cubic-bezier(0.22,1,0.36,1),transform 0.75s cubic-bezier(0.22,1,0.36,1)}
+.reveal-right.is-visible{opacity:1;transform:none}
+.d1{transition-delay:0.1s}.d2{transition-delay:0.2s}.d3{transition-delay:0.3s}.d4{transition-delay:0.4s}.d5{transition-delay:0.5s}
+
+/* ===== HOVER LIFT — override reveal.is-visible transform:none ===== */
+.pp-card,.svc-card,.step-card,.tool-card,.testimonial-item,.faq-item{
+  transition:transform 0.25s ease,box-shadow 0.25s ease,border-color 0.25s ease!important;
+}
+.tool-card:hover{transform:translateY(-3px)!important;box-shadow:0 6px 20px rgba(0,0,0,0.06)!important;}
+.testimonial-item:hover{transform:translateY(-3px)!important;box-shadow:0 6px 20px rgba(0,0,0,0.06)!important;}
+.faq-item:hover{transform:translateY(-3px)!important;box-shadow:0 6px 20px rgba(0,0,0,0.06)!important;}
+.testimonial-item{cursor:pointer!important;}
+
+/* RESPONSIVE */
+@media(max-width:1200px){.container{padding:0 24px}}
+@media(max-width:900px){
+  nav{height:64px}
+  .hero-nav-spacer{height:64px}
+  .nav-pill,.nav-tool-btn{display:none}.hamburger{display:flex}
+  #hero-viewport{height:100vh}
+  h1{font-size:clamp(2.4rem,7.5vw,3.4rem);letter-spacing:-2px}
+  .hero-subline{font-size:1rem}
+  .steps-grid{grid-template-columns:1fr}.features-grid{grid-template-columns:1fr 1fr}
+  .pp-grid{grid-template-columns:1fr}
+  #pain-points .pp-inner{padding:0 24px}
+  .compare-grid{grid-template-columns:1fr}.stats-row{grid-template-columns:1fr}
+  .footer-bar{padding:14px 24px;gap:16px;}
+}
+@media(max-width:600px){
+  /* === GLOBAL === */
+  html,body{overflow-x:hidden;}
+  .container{padding:0 16px;}
+  .nav-inner{padding:0 16px;}
+
+  /* === HERO === */
+  #hero-viewport{min-height:100vh;min-height:100dvh;height:auto;}
+  .hero-content{padding:20px 20px 32px;gap:0;}
+  h1{font-size:clamp(1rem,7.25vw,2rem);letter-spacing:-1.5px;margin-bottom:16px;}
+  .hero-word-window{padding:2px 8px;height:1.2em;}
+  .hero-subline{font-size:0.8rem;line-height:1.5;margin-top:0;margin-bottom:24px;}
+  .hero-trust{font-size:0.68rem;gap:4px;}
+
+  /* === TRUST STRIP === */
+  .trust-logo{width:28px;height:28px;}
+  .trust-more{width:28px;height:28px;font-size:0.65rem;}
+  .trust-strip{gap:10px!important;margin-bottom:20px!important;}
+  .trust-label{font-size:0.7rem!important;}
+  .trust-strip .trust-stars{font-size:12px!important;letter-spacing:1px!important;}
+
+  /* === MARQUEE === */
+  #marquee-sec{padding:14px 0;}
+  .mq-item{font-size:0.75rem;padding:0 16px;}
+
+  /* === PAIN POINTS === */
+  #pain-points .pp-headline{font-size:1.7rem!important;letter-spacing:-1px;line-height:1.15;}
+  #pain-points .pp-sub{font-size:0.9rem;}
+  .pp-card{padding:20px;}
+  .pp-text{font-size:0.88rem;}
+  .pp-bottom-cta{padding:40px 0;font-size:1rem;}
+
+  /* === SERVICES === */
+  .svc-headline{font-size:1.7rem!important;letter-spacing:-1px;line-height:1.15;}
+  .svc-sub{font-size:0.9rem;}
+  .svc-card{padding:24px 20px;}
+  .svc-title{font-size:1.05rem;}
+  .svc-desc{font-size:0.85rem;}
+
+  /* === RESULTS === */
+  .res-headline{font-size:1.7rem!important;letter-spacing:-1px;line-height:1.15;}
+  .res-sub{font-size:0.9rem;}
+  .res-tag{font-size:0.65rem;padding:6px 14px;}
+  .res-card{width:280px;}
+  .res-track{padding-left:20px;}
+
+  /* === TESTIMONIALS === */
+  .testi-shots-hl{font-size:1.7rem!important;letter-spacing:-1px;line-height:1.15;}
+  .testi-shots-sub{font-size:0.9rem;margin-bottom:32px;}
+  .testimonial-grid{gap:14px;}
+
+  /* === HOW IT WORKS === */
+  #how h2{font-size:1.7rem!important;letter-spacing:-1px;line-height:1.15;}
+  .how-sub{font-size:0.9rem;margin-bottom:28px;}
+  .step-card{padding:24px 20px;}
+  .step-num{font-size:2rem;}
+  .step-title{font-size:1.05rem;}
+  .step-desc{font-size:0.85rem;}
+
+  /* === STATEMENT (MID CTA) === */
+  .statement-hl{font-size:1.7rem!important;letter-spacing:-1px;line-height:1.15;}
+  .statement-sub{font-size:0.9rem;}
+  .statement-trust{font-size:0.72rem;}
+  .cta-trust-strip{gap:10px;margin-bottom:20px;}
+  .cta-trust-logo{width:28px;height:28px;}
+  .cta-trust-more{width:28px;height:28px;font-size:0.6rem;}
+  .cta-trust-label{font-size:0.7rem;}
+  .rings{display:none;}
+
+  /* === FREE TOOLS === */
+  .ft-headline{font-size:1.7rem!important;letter-spacing:-1px;line-height:1.15;}
+  .ft-sub{font-size:0.9rem;margin-bottom:32px;}
+  .tool-card{padding:24px 20px;}
+  .tool-badge{font-size:0.6rem;padding:4px 10px;}
+  .tool-name{font-size:1.05rem;}
+  .tool-desc{font-size:0.82rem;}
+  .tool-icon{width:40px;height:40px;font-size:0.8rem;}
+
+  /* === FAQ === */
+  #faq h2{font-size:clamp(1.5rem,6vw,2rem);}
+  .faq-question{padding:16px 20px;}
+  .faq-q-text{font-size:0.9rem;}
+  .faq-answer-inner{padding:0 20px 16px;font-size:0.85rem;}
+
+  .mobile-br{display:block;}
+
+  /* === FINAL CTA === */
+  #cta h2{font-size:1.7rem!important;letter-spacing:-1px;line-height:1.15;}
+
+  .cta-sub{font-size:0.9rem;}
+  .cta-fine{font-size:0.68rem;}
+
+  /* === BUTTONS — hero === */
+  .hero-btns{flex-direction:column;width:100%;padding:0 16px;gap:8px;margin-bottom:16px;}
+  .btn-primary{width:100%;justify-content:center;padding:11px 20px;font-size:0.87rem;}
+  .btn-ghost{width:100%;justify-content:center;padding:10px 20px;font-size:0.85rem;}
+  /* === BUTTONS — dark sections === */
+  .statement-btns,.cta-btns{flex-direction:column;width:100%;padding:0 24px;gap:10px;}
+  .btn-lime{width:100%;justify-content:center;padding:13px 20px;font-size:0.9rem;}
+  .btn-ghost-dk{width:100%;justify-content:center;padding:12px 20px;font-size:0.88rem;}
+  .btn-stmt-primary,.btn-stmt-ghost{width:100%;justify-content:center;padding:13px 20px;font-size:0.9rem;}
+
+  /* === FOOTER === */
+  .footer-logo-img{height:40px;}
+  .footer-bar{flex-direction:column;gap:16px;padding:24px 20px;text-align:center;}
+  .footer-nav{gap:16px;justify-content:center;}
+  .footer-nav a{font-size:0.72rem;letter-spacing:0.5px;}
+  .footer-social{justify-content:center;}
+  .footer-soc svg{width:20px;height:20px;}
+
+  /* === LIGHTBOX === */
+  .lightbox-img{max-width:95%;}
+  .lightbox-close{top:16px;right:16px;font-size:2rem;}
+
+  /* === MISC === */
+  .features-grid{grid-template-columns:1fr;}
+  .stats-row{grid-template-columns:1fr;}
+  .mq-track{animation-duration:30s;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <img src="Rank forest transparent logo.svg" alt="Rank Forest">
+    </a>
+    <div class="nav-pill">
+      <a href="#hero">Home</a>
+      <a href="#services">Services</a>
+      <a href="#results">Case Studies</a>
+      <a href="#testi-shots">Testimonials</a>
+      <a href="#free-tools">Free Tools</a>
+      <a href="#cta">Contact Us</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <a href="https://tally.so/r/9qOPgQ" target="_blank" rel="noopener noreferrer" class="nav-tool-btn">Apply for Free 30 Days <span class="arr">→</span></a>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mob-overlay" id="mob-overlay">
+  <button class="mob-close" id="mob-close">×</button>
+  <a href="#hero">Home</a>
+  <a href="#services">Services</a>
+  <a href="#results">Case Studies</a>
+  <a href="#testi-shots">Testimonials</a>
+  <a href="#free-tools">Free Tools</a>
+  <a href="#cta">Contact Us</a>
+  <a href="https://tally.so/r/9qOPgQ" target="_blank" rel="noopener noreferrer" class="nav-tool-btn">Apply for Free 30 Days <span class="arr">→</span></a>
+</div>
+
+<!-- HERO VIEWPORT: announcement bar + nav + hero + marquee = 100vh -->
+<div id="hero-viewport">
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-nav-spacer" id="hero-nav-spacer"></div>
+  <div class="hero-content">
+    <div class="trust-strip">
+      <div class="trust-logos">
+        <img src="1.png" alt="Client logo" class="trust-logo">
+        <img src="2.png" alt="Client logo" class="trust-logo">
+        <img src="3.png" alt="Client logo" class="trust-logo">
+        <img src="4.png" alt="Client logo" class="trust-logo">
+        <span class="trust-more">+3</span>
+      </div>
+      <div class="trust-proof">
+        <div class="trust-stars">★★★★★</div>
+        <div class="trust-label">Trusted by Top Amazon Brands</div>
+      </div>
+    </div>
+    <h1>
+      Scale your Amazon
+      <span class="hero-word-window" id="heroWordWin"></span><br>
+      in less than 90 Days
+    </h1>
+    <p class="hero-subline">First 30 days of ads management <span class="hl">cost nothing.</span></p>
+    <div class="hero-btns">
+      <a href="https://tally.so/r/9qOPgQ" target="_blank" rel="noopener noreferrer" class="btn-primary">Apply for Free 30 Days <span class="arr">→</span></a>
+      <a href="#statement" class="btn-ghost">See Our Results</a>
+    </div>
+    <div class="hero-trust">
+      <span>No Contracts</span>
+      <span class="trust-sep">·</span>
+      <span>Live in 48 Hours</span>
+      <span class="trust-sep">·</span>
+      <span class="trust-stars">★★★★★</span>
+      <span>4.9 / 5 Client Rating</span>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<section id="marquee-sec">
+  <div class="mq-track">
+    <div class="mq-item">First 30 Days Free, <strong>Always</strong></div>
+    <div class="mq-item">No Contracts, <strong>Ever</strong></div>
+    <div class="mq-item">Weekly Optimizations, <strong>Not Monthly</strong></div>
+    <div class="mq-item"><strong>Instant</strong> Communication</div>
+    <div class="mq-item"><strong>Transparent</strong> Reporting</div>
+    <div class="mq-item"><strong>500+</strong> Campaigns Managed</div>
+    <div class="mq-item"><span class="mq-stars">★★★★★</span> <strong>4.9 / 5</strong> Client Rating</div>
+    <div class="mq-item">First 30 Days Free, <strong>Always</strong></div>
+    <div class="mq-item">No Contracts, <strong>Ever</strong></div>
+    <div class="mq-item">Weekly Optimizations, <strong>Not Monthly</strong></div>
+    <div class="mq-item"><strong>Instant</strong> Communication</div>
+    <div class="mq-item"><strong>Transparent</strong> Reporting</div>
+    <div class="mq-item"><strong>500+</strong> Campaigns Managed</div>
+    <div class="mq-item"><span class="mq-stars">★★★★★</span> <strong>4.9 / 5</strong> Client Rating</div>
+    <div class="mq-item">First 30 Days Free, <strong>Always</strong></div>
+    <div class="mq-item">No Contracts, <strong>Ever</strong></div>
+    <div class="mq-item">Weekly Optimizations, <strong>Not Monthly</strong></div>
+    <div class="mq-item"><strong>Instant</strong> Communication</div>
+    <div class="mq-item"><strong>Transparent</strong> Reporting</div>
+    <div class="mq-item"><strong>500+</strong> Campaigns Managed</div>
+    <div class="mq-item"><span class="mq-stars">★★★★★</span> <strong>4.9 / 5</strong> Client Rating</div>
+  </div>
+</section>
+
+</div><!-- /hero-viewport -->
+
+<!-- PAIN POINTS -->
+<section id="pain-points" class="dot-texture">
+  <div class="pp-inner">
+    <p class="pp-headline">This Sounds Like You,<br class="mobile-br"> <span class="serif">Doesn't It?</span></p>
+    <p class="pp-sub">These are the exact problems our clients had before they found us.</p>
+    <div class="pp-grid">
+      <div class="pp-card">
+        <div class="pp-check">
+          <svg width="14" height="11" viewBox="0 0 14 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1.5 5.5L5.5 9.5L12.5 1.5" stroke="#2d6a2d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <p class="pp-text">You want to see your net profit grow consistently, not just your top-line revenue.</p>
+      </div>
+      <div class="pp-card">
+        <div class="pp-check">
+          <svg width="14" height="11" viewBox="0 0 14 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1.5 5.5L5.5 9.5L12.5 1.5" stroke="#2d6a2d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <p class="pp-text">Your organic rankings haven't moved an inch despite spending thousands on ranking campaigns.</p>
+      </div>
+      <div class="pp-card">
+        <div class="pp-check">
+          <svg width="14" height="11" viewBox="0 0 14 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1.5 5.5L5.5 9.5L12.5 1.5" stroke="#2d6a2d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <p class="pp-text">You feel like just another number to your agency, waiting days for a response from a junior account manager.</p>
+      </div>
+      <div class="pp-card">
+        <div class="pp-check">
+          <svg width="14" height="11" viewBox="0 0 14 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1.5 5.5L5.5 9.5L12.5 1.5" stroke="#2d6a2d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <p class="pp-text">You're overwhelmed by the sheer complexity of Amazon Ads, constantly wondering if you're missing crucial optimization opportunities.</p>
+      </div>
+      <div class="pp-card">
+        <div class="pp-check">
+          <svg width="14" height="11" viewBox="0 0 14 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1.5 5.5L5.5 9.5L12.5 1.5" stroke="#2d6a2d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <p class="pp-text">You want to reclaim your time, focusing on product development while experts handle your Amazon ads.</p>
+      </div>
+      <div class="pp-card">
+        <div class="pp-check">
+          <svg width="14" height="11" viewBox="0 0 14 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1.5 5.5L5.5 9.5L12.5 1.5" stroke="#2d6a2d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <p class="pp-text">Your brand is struggling to stand out in a crowded marketplace, feeling invisible despite having great products.</p>
+      </div>
+    </div>
+    <a href="#services" class="pp-bottom-cta">Sound familiar? Here's what we do about it <span class="arr">↓</span></a>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services" class="dot-texture">
+  <div class="svc-inner">
+    <div class="res-tag reveal">Services</div>
+    <h2 class="svc-headline reveal">What Happens <span class="svc-italic svc-lime-dk">After You Say Yes</span></h2>
+    <p class="svc-sub reveal d2">Here's exactly what we do inside your account from day one.</p>
+    <div class="svc-grid">
+      <div class="svc-card reveal d1">
+        <p class="svc-title">Fix What's Broken in Your Campaigns</p>
+        <p class="svc-desc">Messy campaigns are rebuilt from scratch, separating match types and isolating top performers to stop wasted ad spend immediately.</p>
+      </div>
+      <div class="svc-card reveal d2">
+        <p class="svc-title">Target the Highest Impact Keywords</p>
+        <p class="svc-desc">Reverse engineering the strategies of top selling competitors to find their highest converting keywords and capitalize on the gaps they're ignoring.</p>
+      </div>
+      <div class="svc-card reveal d2">
+        <p class="svc-title">Optimize Bids and Placements</p>
+        <p class="svc-desc">We don't just guess bids. We optimize your base bids and apply data backed percentage modifiers for each placement so you only pay for traffic that converts.</p>
+      </div>
+      <div class="svc-card reveal d3">
+        <p class="svc-title">Launch Products With a Strategy Behind</p>
+        <p class="svc-desc">Capitalizing on Amazon's honeymoon period by using aggressive initial targeting to drive early sales velocity and boost your organic rank fast.</p>
+      </div>
+      <div class="svc-card svc-full reveal d3">
+        <p class="svc-title">Optimize, Adjust, and Scale Every Week</p>
+        <p class="svc-desc">No set and forget strategies. We negate bad search terms, harvest new keywords, and shift budgets to winning campaigns every single week.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section id="results" class="dot-texture">
+  <div class="res-inner">
+    <div class="res-tag reveal">Results</div>
+    <h2 class="res-headline reveal d1">Here's What Changed<br class="mobile-br"> <span class="res-italic res-lime">After We Took Over</span></h2>
+    <p class="res-sub reveal d2">Real accounts. Real numbers. See for yourself.</p>
+  </div>
+  <div class="res-carousel">
+    <div class="res-track">
+      <!-- Set 1 -->
+      <div class="res-card"><img src="3.svg" alt="Result 1"></div>
+      <div class="res-card"><img src="4.svg" alt="Result 2"></div>
+      <div class="res-card"><img src="5.svg" alt="Result 3"></div>
+      <div class="res-card"><img src="6.svg" alt="Result 4"></div>
+      <div class="res-card"><img src="7.svg" alt="Result 5"></div>
+      <div class="res-card"><img src="8.svg" alt="Result 6"></div>
+      <div class="res-card"><img src="9.svg" alt="Result 7"></div>
+      <!-- Set 2 (seamless loop duplicate) -->
+      <div class="res-card"><img src="3.svg" alt="Result 1"></div>
+      <div class="res-card"><img src="4.svg" alt="Result 2"></div>
+      <div class="res-card"><img src="5.svg" alt="Result 3"></div>
+      <div class="res-card"><img src="6.svg" alt="Result 4"></div>
+      <div class="res-card"><img src="7.svg" alt="Result 5"></div>
+      <div class="res-card"><img src="8.svg" alt="Result 6"></div>
+      <div class="res-card"><img src="9.svg" alt="Result 7"></div>
+    </div>
+  </div>
+</section>
+
+<!-- SCREENSHOT TESTIMONIALS -->
+<!-- NOTE: Must 3.png and Must 4.png are ~1MB+ — compress before production -->
+<section id="testi-shots" class="dot-texture">
+  <div class="testi-shots-inner">
+    <h2 class="testi-shots-hl reveal d1"><span class="sans">Don't Take Our </span><span class="serif">Word for It</span></h2>
+    <p class="testi-shots-sub reveal d2">Straight from the inbox. Unedited messages from brands we work with.</p>
+    <div class="testimonial-grid">
+      <div class="testimonial-item reveal d1" style="background:#ffffff;"><img src="Must%201.png" alt="Client testimonial 1" loading="lazy"></div>
+      <div class="testimonial-item testimonial-item--dark reveal d1" style="background:#1a1a1a;"><img src="Must%202.png" alt="Client testimonial 2" loading="lazy"></div>
+      <div class="testimonial-item testimonial-item--dark reveal d2" style="background:#1e1e1e;"><img src="Must%203.png" alt="Client testimonial 3" loading="lazy"></div>
+      <div class="testimonial-item reveal d2" style="background:#ffffff;"><img src="Must%204.png" alt="Client testimonial 4" loading="lazy"></div>
+      <div class="testimonial-item reveal d3" style="background:#ffffff;"><img src="Must%205.png" alt="Client testimonial 5" loading="lazy"></div>
+      <div class="testimonial-item reveal d3" style="background:#fef9e7;"><img src="Must%206.png" alt="Client testimonial 6" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<!-- HOW IT WORKS -->
+<section id="how" class="dot-texture">
+  <div class="container sec-center">
+    <h2 class="reveal d1"><span class="sans">Three Steps. </span><span class="serif">That's It.</span></h2>
+    <p class="how-sub reveal d2">No lengthy onboarding. No 10-page questionnaires. Just results.</p>
+    <div class="steps-grid">
+      <div class="step-card reveal d1">
+        <div class="step-lbl">STEP</div><div class="step-num">01</div>
+        <div class="step-title">You Apply</div>
+        <p class="step-desc">Fill out a short 5-minute form. Tell us about your brand, your products, and your current ad setup. No fluff, no sales call required.</p>
+      </div>
+      <div class="step-card reveal d2">
+        <div class="step-lbl">STEP</div><div class="step-num">02</div>
+        <div class="step-title">We Audit Your Account</div>
+        <p class="step-desc">We dig into your campaigns, keywords, bids, and structure. You get a clear picture of what's working, what's wasting budget, and where the opportunities are.</p>
+      </div>
+      <div class="step-card reveal d3">
+        <div class="step-lbl">STEP</div><div class="step-num">03</div>
+        <div class="step-title">We Manage for 30 Days — Free</div>
+        <p class="step-desc">Full campaign management. Weekly optimizations. Bi-weekly reports. After 30 days, you decide. Stay or walk. Zero pressure.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOLD STATEMENT / CTA -->
+<section id="statement" class="dot-texture">
+  <div class="rings">
+    <div class="ring" style="width:140px;height:140px"></div>
+    <div class="ring" style="width:280px;height:280px"></div>
+    <div class="ring" style="width:420px;height:420px"></div>
+    <div class="ring" style="width:560px;height:560px"></div>
+    <div class="ring" style="width:700px;height:700px"></div>
+  </div>
+  <div class="container">
+    <div class="statement-inner">
+      <div class="cta-trust-strip reveal">
+        <div class="cta-trust-logos">
+          <img src="1.png" alt="Client" class="cta-trust-logo">
+          <img src="2.png" alt="Client" class="cta-trust-logo">
+          <img src="3.png" alt="Client" class="cta-trust-logo">
+          <img src="4.png" alt="Client" class="cta-trust-logo">
+          <span class="cta-trust-more">+3</span>
+        </div>
+        <div class="cta-trust-proof">
+          <span class="cta-trust-stars">★★★★★</span>
+          <span class="cta-trust-label">Trusted by Top Amazon Brands</span>
+        </div>
+      </div>
+      <h2 class="statement-hl reveal d1">30 Days. On Us. <span class="serif" style="color:#c8f31d;">You Decide.</span></h2>
+      <p class="statement-sub reveal d2">Full campaign management for a month, completely free. If your numbers don't improve, you walk. No contracts. No catch.</p>
+      <div class="statement-btns reveal d3">
+        <a href="https://tally.so/r/9qOPgQ" target="_blank" rel="noopener noreferrer" class="btn-stmt-primary">Apply Now — It's Free →</a>
+        <a href="https://calendly.com/rankforest/discovery-call" target="_blank" rel="noopener noreferrer" class="btn-stmt-ghost">Book a Discovery Call</a>
+      </div>
+      <p class="statement-trust reveal d4">No credit card required · Live in 48 hours · Cancel anytime</p>
+    </div>
+  </div>
+</section>
+
+<!-- FREE TOOLS -->
+<section id="free-tools">
+  <div class="ft-inner">
+    <h2 class="ft-headline">Free Tools That <span class="ft-italic">Actually Help</span></h2>
+    <p class="ft-sub">No signup. No paywall. Just open and use.</p>
+    <div class="tools-grid">
+      <!-- Card 1: Live -->
+      <div class="tool-card reveal d1">
+        <span class="tool-badge tool-badge-live">FREE</span>
+        <div class="tool-card-body">
+          <div class="tool-icon">KW</div>
+          <div class="tool-name">Keyword Research Dashboard</div>
+          <p class="tool-desc">Upload your Helium 10 exports and get a clean keyword table with filters, root word analysis, and competition scoring.</p>
+        </div>
+        <div class="tool-card-footer">
+          <a href="#tool" class="tool-cta-btn">Try it free →</a>
+          <div class="tool-h10-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 89 87" aria-label="Helium 10" role="img"><g fill="none"><path fill="#0081FF" d="M.6 18.83L.6 46.65 21.79 46.65 21.79 30.41zM34 30.41L34 46.65 55.2 46.65 55.2 18.83zM67.41 12.17L67.41 46.65 88.6 46.65 88.6.6z"/><path fill="#003873" d="M.6 58.01H21.79V85.82H.6zM34 58.01H55.19V85.82H34zM67.41 58.01H88.6V85.82H67.41z"/></g></svg></div>
+        </div>
+      </div>
+      <!-- Card 2: Coming Soon -->
+      <div class="tool-card reveal d2">
+        <span class="tool-badge tool-badge-soon">Coming Soon</span>
+        <div class="tool-card-body">
+          <div class="tool-icon">AT</div>
+          <div class="tool-name">Weekly Ads Tracker</div>
+          <p class="tool-desc">Track campaign performance week-over-week. Spot trends and catch problems before they cost you.</p>
+        </div>
+        <div class="tool-card-footer">
+          <a href="#" onclick="return false;" class="tool-notify-link">Notify me →</a>
+        </div>
+      </div>
+      <!-- Card 3: Coming Soon -->
+      <div class="tool-card reveal d3">
+        <span class="tool-badge tool-badge-soon">Coming Soon</span>
+        <div class="tool-card-body">
+          <div class="tool-icon">PT</div>
+          <div class="tool-name">Weekly Products Tracker</div>
+          <p class="tool-desc">Track product performance week-over-week — sales, profits, and ad spend at a glance. Spot what's scaling and what's draining your budget.</p>
+        </div>
+        <div class="tool-card-footer">
+          <a href="#" onclick="return false;" class="tool-notify-link">Notify me →</a>
+        </div>
+      </div>
+      <!-- Card 4: Coming Soon -->
+      <div class="tool-card reveal d4">
+        <span class="tool-badge tool-badge-soon">Coming Soon</span>
+        <div class="tool-card-body">
+          <div class="tool-icon">NG</div>
+          <div class="tool-name">N-Gram Analysis Tool</div>
+          <p class="tool-desc">Find which 2-word and 3-word search term patterns drive the most conversions.</p>
+        </div>
+        <div class="tool-card-footer">
+          <a href="#" onclick="return false;" class="tool-notify-link">Notify me →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="container">
+    <h2 class="reveal d1" style="font-size:clamp(2rem,3.5vw,3.2rem);letter-spacing:-1.5px;margin-bottom:14px;text-align:center;"><span style="font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-weight:800;color:#1a2a1a;">Got </span><span style="font-family:'Instrument Serif',Georgia,'Times New Roman',serif;font-style:italic;color:#1a2a1a;">questions?</span></h2>
+    <p class="reveal d2" style="color:#94958f;font-size:1.05rem;margin-bottom:40px;text-align:center;">Straight answers. No sales pitch.</p>
+    <div class="faq-inner">
+      <div class="faq-item reveal d1">
+        <div class="faq-question"><span class="faq-q-text">What's the catch with the free trial?</span><span class="faq-icon">+</span></div>
+        <div class="faq-answer"><div class="faq-answer-inner">No catch. No credit card, no auto-billing, no contracts. We're confident in our work — if we can't prove value in 30 days, we don't deserve your business.</div></div>
+      </div>
+      <div class="faq-item reveal d2">
+        <div class="faq-question"><span class="faq-q-text">How long before I see results?</span><span class="faq-icon">+</span></div>
+        <div class="faq-answer"><div class="faq-answer-inner">Most clients see improvements within 2–3 weeks — reduced wasted spend, better targeting, lower ACoS. Real scaling kicks in around 60–90 days. Anyone promising overnight results isn't being honest.</div></div>
+      </div>
+      <div class="faq-item reveal d3">
+        <div class="faq-question"><span class="faq-q-text">How much does it cost after the free trial?</span><span class="faq-icon">+</span></div>
+        <div class="faq-answer"><div class="faq-answer-inner">Flat monthly retainer based on your account size and ad spend. No hidden fees, no percentage of revenue. We discuss pricing during the trial once we understand your account.</div></div>
+      </div>
+      <div class="faq-item reveal d4">
+        <div class="faq-question"><span class="faq-q-text">How are you different from other Amazon PPC agencies?</span><span class="faq-icon">+</span></div>
+        <div class="faq-answer"><div class="faq-answer-inner">We prove our value before you pay (30-day free trial), optimize weekly instead of monthly, and never lock you into contracts. Most agencies require months of commitment before you know if they're any good.</div></div>
+      </div>
+      <div class="faq-item reveal d1">
+        <div class="faq-question"><span class="faq-q-text">Do you work with launches or only established products?</span><span class="faq-icon">+</span></div>
+        <div class="faq-answer"><div class="faq-answer-inner">Both. Launches need a different playbook — honeymoon tactics, aggressive targeting, strategic spend for early velocity. Established products need ongoing optimization and scaling. We handle both.</div></div>
+      </div>
+      <div class="faq-item reveal d2">
+        <div class="faq-question"><span class="faq-q-text">Who actually manages my campaigns?</span><span class="faq-icon">+</span></div>
+        <div class="faq-answer"><div class="faq-answer-inner">Me, directly. You're not handed off to a junior account manager after the sales call. No middlemen, no communication gaps.</div></div>
+      </div>
+      <div class="faq-item reveal d3">
+        <div class="faq-question"><span class="faq-q-text">Can you guarantee a specific ACoS or ROAS?</span><span class="faq-icon">+</span></div>
+        <div class="faq-answer"><div class="faq-answer-inner">No — and be skeptical of anyone who does. Every account is different. What we guarantee is weekly hands-on work, honest reporting, and a clear strategy.</div></div>
+      </div>
+      <div class="faq-item reveal d4">
+        <div class="faq-question"><span class="faq-q-text">Do I keep my campaigns if I leave?</span><span class="faq-icon">+</span></div>
+        <div class="faq-answer"><div class="faq-answer-inner">Yes. Everything stays in your account — campaigns, keywords, negative lists, bid strategies. We never hold your data hostage.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta" class="dot-texture">
+  <div class="rings">
+    <div class="ring" style="width:140px;height:140px"></div>
+    <div class="ring" style="width:280px;height:280px"></div>
+    <div class="ring" style="width:420px;height:420px"></div>
+    <div class="ring" style="width:560px;height:560px"></div>
+    <div class="ring" style="width:700px;height:700px"></div>
+  </div>
+  <div class="container sec-center">
+    <div class="cta-trust-strip reveal">
+      <div class="cta-trust-logos">
+        <img src="1.png" alt="Client" class="cta-trust-logo">
+        <img src="2.png" alt="Client" class="cta-trust-logo">
+        <img src="3.png" alt="Client" class="cta-trust-logo">
+        <img src="4.png" alt="Client" class="cta-trust-logo">
+        <span class="cta-trust-more">+3</span>
+      </div>
+      <div class="cta-trust-proof">
+        <span class="cta-trust-stars">★★★★★</span>
+        <span class="cta-trust-label">Trusted by Top Amazon Brands</span>
+      </div>
+    </div>
+    <h2 class="reveal"><span class="sans">Your ads could be </span><span class="serif">printing money.</span></h2>
+    <p class="cta-sub reveal d1">Apply today. We start the audit within 48 hours. If you don't see real improvement in 30 days, you owe us nothing.</p>
+    <div class="cta-btns reveal d2">
+      <a href="https://tally.so/r/9qOPgQ" target="_blank" rel="noopener noreferrer" class="btn-lime">Apply Now — It's Free <span class="arr">→</span></a>
+      <a href="https://calendly.com/rankforest/discovery-call" target="_blank" rel="noopener noreferrer" class="btn-ghost-dk">Book a Discovery Call</a>
+    </div>
+    <p class="cta-fine reveal d3">No credit card required · Limited to 3 brands / month · Cancel anytime</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-bar">
+    <a href="#hero" class="footer-logo">
+      <img src="Rank forest transparent logo.svg" alt="Rank Forest" class="footer-logo-img">
+    </a>
+    <nav class="footer-nav">
+      <a href="#cta">Contact Us</a>
+      <a href="#free-tools">Free Tools</a>
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <a href="terms-and-conditions.html">Terms &amp; Conditions</a>
+    </nav>
+    <div class="footer-social">
+      <a href="https://www.linkedin.com/in/amazon-advertising-consultant/" target="_blank" rel="noopener noreferrer" class="footer-soc" aria-label="LinkedIn">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <rect width="22" height="22" rx="3" fill="currentColor"/>
+          <path d="M5.5 8.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3ZM4 10h3v8H4v-8Zm5 0h2.7v1.1c.4-.7 1.3-1.4 2.8-1.4 3 0 3.5 2 3.5 4.5V18h-3v-4c0-1-.02-2.2-1.35-2.2-1.33 0-1.65 1.1-1.65 2.1V18H9V10Z" fill="white"/>
+        </svg>
+      </a>
+      <a href="mailto:rankforest@gmail.com" class="footer-soc" aria-label="Email">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // Nav — fixed at top:0, scrolled shadow
+  var mainNav = document.getElementById('main-nav');
+  window.addEventListener('scroll', function(){
+    mainNav.classList.toggle('scrolled', window.scrollY > 30);
+  }, {passive:true});
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(function(link){
+    link.addEventListener('click',function(e){
+      var targetId=this.getAttribute('href');
+      if(targetId==='#'||targetId==='#hero'){
+        e.preventDefault();
+        window.scrollTo({top:0,behavior:'smooth'});
+        return;
+      }
+      var target=document.querySelector(targetId);
+      if(target){
+        e.preventDefault();
+        var navH=(mainNav?mainNav.offsetHeight:80);
+        var pos=target.getBoundingClientRect().top+window.pageYOffset-navH-20;
+        window.scrollTo({top:pos,behavior:'smooth'});
+      }
+    });
+  });
+
+  // Active nav link on scroll
+  var navPillLinks=document.querySelectorAll('.nav-pill a:not(.nav-tool-btn)');
+  var navSections=document.querySelectorAll('#hero,#services,#results,#testi-shots,#free-tools,#cta');
+  function updateActiveNav(){
+    if(window.scrollY<200){
+      navPillLinks.forEach(function(l){l.classList.remove('active');});
+      var homeLink=document.querySelector('.nav-pill a[href="#hero"]');
+      if(homeLink)homeLink.classList.add('active');
+      return;
+    }
+    var scrollPos=window.scrollY+150;
+    var current='';
+    navSections.forEach(function(sec){
+      if(scrollPos>=sec.offsetTop&&scrollPos<sec.offsetTop+sec.offsetHeight){
+        current='#'+sec.id;
+      }
+    });
+    navPillLinks.forEach(function(l){
+      l.classList.remove('active');
+      if(l.getAttribute('href')===current)l.classList.add('active');
+    });
+  }
+  window.addEventListener('scroll',updateActiveNav,{passive:true});
+  updateActiveNav();
+
+  // Mobile menu
+  var overlay = document.getElementById('mob-overlay');
+  document.getElementById('hamburger').addEventListener('click', function(){
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+  document.getElementById('mob-close').addEventListener('click', function(){
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  });
+  overlay.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+
+  // Scroll reveal
+  var revEls = document.querySelectorAll('.reveal,.reveal-left,.reveal-right');
+  var revObs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add('is-visible'); revObs.unobserve(e.target); }
+    });
+  }, {threshold:0.12, rootMargin:'0px 0px -48px 0px'});
+  revEls.forEach(function(el){ revObs.observe(el); });
+
+  // Counter animation
+  function animCount(el, target, prefix, suffix, isFloat, isK){
+    var dur = 1800, start = null;
+    function tick(ts){
+      if(!start) start = ts;
+      var p = Math.min((ts-start)/dur,1);
+      var ease = 1-Math.pow(1-p,3);
+      var val;
+      if(isK){ val = (ease*target/1000).toFixed(1)+'K'; }
+      else if(isFloat){ val = (ease*target).toFixed(1); }
+      else { val = Math.round(ease*target); }
+      el.textContent = (prefix||'') + val + (suffix||'');
+      if(p<1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+  var statEls = document.querySelectorAll('.stat-val[data-count]');
+  var cntObs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        var el = e.target;
+        var t = parseFloat(el.dataset.count);
+        animCount(el, t, el.dataset.prefix||'', el.dataset.suffix||'',
+          el.dataset.count.indexOf('.')>-1, el.dataset.kformat==='1');
+        cntObs.unobserve(el);
+      }
+    });
+  }, {threshold:0.3});
+  statEls.forEach(function(el){ cntObs.observe(el); });
+
+  // Free tools counter
+  var ftCounter = document.getElementById('ft-counter');
+  if(ftCounter){
+    var ftCntObs = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          var dur=1500, start=null;
+          function ftTick(ts){
+            if(!start) start=ts;
+            var p=Math.min((ts-start)/dur,1);
+            var ease=1-Math.pow(1-p,3);
+            ftCounter.textContent=Math.round(ease*50);
+            if(p<1) requestAnimationFrame(ftTick);
+          }
+          requestAnimationFrame(ftTick);
+          ftCntObs.unobserve(e.target);
+        }
+      });
+    },{threshold:0.4});
+    ftCntObs.observe(ftCounter);
+  }
+
+  // FAQ Accordion
+  document.querySelectorAll('.faq-item').forEach(function(item){
+    item.addEventListener('click', function(){
+      var wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(function(openItem){
+        openItem.classList.remove('open');
+      });
+      if(!wasOpen){ item.classList.add('open'); }
+    });
+  });
+})();
+
+// ===== LIGHTBOX FUNCTIONALITY =====
+function openLightbox(imgSrc){
+  var lb=document.getElementById('lightbox');
+  document.getElementById('lightbox-img').src=imgSrc;
+  lb.style.display='flex';
+  document.body.style.overflow='hidden';
+}
+function closeLightbox(){
+  document.getElementById('lightbox').style.display='none';
+  document.body.style.overflow='';
+}
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('.testimonial-item').forEach(function(card){
+    card.addEventListener('click',function(){
+      var img=this.querySelector('img');
+      if(img){openLightbox(img.src);}
+    });
+  });
+  document.querySelectorAll('.res-card').forEach(function(card){
+    card.addEventListener('click',function(){
+      var img=this.querySelector('img');
+      if(img){openLightbox(img.src);}
+    });
+  });
+  var lb=document.getElementById('lightbox');
+  if(lb){
+    lb.addEventListener('click',function(e){
+      if(e.target!==document.getElementById('lightbox-img')){closeLightbox();}
+    });
+  }
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeLightbox();});
+});
+</script>
+
+<script>
+// ===== FONT-READY PAGE REVEAL =====
+(function(){
+  var done=false;
+  function reveal(){
+    if(done)return;
+    done=true;
+    // Measure and lock word window width while page is still invisible
+    if(window.heroWordRotator)window.heroWordRotator.init();
+    document.documentElement.style.transition='opacity 0.25s ease';
+    document.documentElement.style.opacity='1';
+    // Start char animation as page fades in
+    if(window.heroWordRotator)window.heroWordRotator.start();
+  }
+  if(document.fonts&&document.fonts.ready){
+    document.fonts.ready.then(reveal);
+  }
+  setTimeout(reveal,700);
+})();
+</script>
+
+<script>
+// ===== HERO ENTRANCE ANIMATION (JS-driven, failsafe) =====
+(function(){
+  var items=[
+    {sel:'.trust-strip',delay:100},
+    {sel:'#hero h1',delay:250},
+    {sel:'.hero-subline',delay:450},
+    {sel:'.hero-btns',delay:700},
+    {sel:'.hero-trust',delay:850}
+  ];
+  var done=false;
+  function run(){
+    if(done)return;
+    done=true;
+    items.forEach(function(item){
+      var el=document.querySelector(item.sel);
+      if(!el)return;
+      el.style.opacity='0';
+      el.style.transform='translateY(20px)';
+      el.style.transition='opacity 0.6s ease,transform 0.6s ease';
+      setTimeout(function(){
+        el.style.opacity='1';
+        el.style.transform='translateY(0)';
+        setTimeout(function(){el.style.transition='none';},700);
+      },item.delay);
+    });
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',run);
+  }else{run();}
+})();
+// ===== MARQUEE — JS-driven, pixel-perfect loop =====
+(function(){
+  var track=document.querySelector('.mq-track');
+  if(!track)return;
+  var speed=60,pos=0,hw=0,last=0;
+  function tick(ts){
+    if(!last){last=ts;requestAnimationFrame(tick);return;}
+    var d=ts-last;last=ts;
+    if(d>100)d=16;
+    pos-=(speed*d)/1000;
+    if(hw>0&&Math.abs(pos)>=hw)pos+=hw;
+    track.style.transform='translateX('+pos+'px)';
+    requestAnimationFrame(tick);
+  }
+  window.addEventListener('load',function(){
+    hw=track.scrollWidth/3;
+    if(hw>0)requestAnimationFrame(tick);
+  });
+  window.addEventListener('resize',function(){hw=track.scrollWidth/3;});
+})();
+// ===== CAROUSEL — time-based, no stutter =====
+(function(){
+  var track=document.querySelector('.res-track');
+  if(!track)return;
+  track.style.opacity='1';
+  var speed=50,pos=0,tw=0,last=0;
+  function tick(ts){
+    if(!last){last=ts;requestAnimationFrame(tick);return;}
+    var d=ts-last;last=ts;
+    if(d>100)d=16;
+    pos-=(speed*d)/1000;
+    if(Math.abs(pos)>=tw)pos+=tw;
+    track.style.transform='translateX('+pos+'px)';
+    requestAnimationFrame(tick);
+  }
+  window.addEventListener('load',function(){
+    tw=track.scrollWidth/2;
+    if(tw>0)requestAnimationFrame(tick);
+  });
+  window.addEventListener('resize',function(){tw=track.scrollWidth/2;});
+})();
+
+// ===== HERO ROTATING WORD — per-character stagger =====
+(function(){
+  var words=['Profits','Revenue','ROAS','Rankings','Sales'];
+  var win,current=0,wordWidths=[],animating=false;
+  var charDur=0.38,staggerDelay=0.03,holdTime=2600;
+
+  function buildWord(word){
+    win.innerHTML='';
+    word.split('').forEach(function(ch,i){
+      var wrap=document.createElement('span');
+      wrap.className='hero-char-wrap';
+      wrap.setAttribute('data-i',i);
+      var slot=document.createElement('span');
+      slot.className='hero-char-slot';
+      slot.textContent=ch===' '?'\u00a0':ch;
+      wrap.appendChild(slot);
+      win.appendChild(wrap);
+    });
+  }
+
+  function animateChars(direction,onDone){
+    var slots=win.querySelectorAll('.hero-char-slot');
+    var n=slots.length;
+    var maxDelay=(n-1)*staggerDelay;
+    slots.forEach(function(slot,i){
+      var delay=(n-1-i)*staggerDelay;
+      slot.style.animation='none';
+      slot.offsetWidth; // force reflow
+      if(direction==='in'){
+        slot.style.animation='heroCharIn '+charDur+'s cubic-bezier(0.34,1.4,0.64,1) '+delay+'s both';
+      }else{
+        slot.style.animation='heroCharOut '+charDur+'s cubic-bezier(0.4,0,0.2,1) '+delay+'s both';
+      }
+    });
+    if(onDone)setTimeout(onDone,(maxDelay+charDur)*1000);
+  }
+
+  function showWord(idx,skipTransition){
+    buildWord(words[idx]);
+    win.style.transition=skipTransition?'none':'width 0.38s cubic-bezier(0.4,0,0.2,1)';
+    win.style.width=wordWidths[idx]+'px';
+    animateChars('in');
+  }
+
+  function rotate(){
+    if(animating)return;
+    animating=true;
+    animateChars('out',function(){
+      current=(current+1)%words.length;
+      showWord(current,false);
+      var n=words[current].length;
+      setTimeout(function(){animating=false;},((n-1)*staggerDelay+charDur)*1000);
+    });
+  }
+
+  window.heroWordRotator={
+    init:function(){
+      win=document.getElementById('heroWordWin');
+      if(!win)return;
+      // Synchronous measurement while page is still invisible (opacity:0)
+      win.style.visibility='hidden';
+      win.style.overflow='visible';
+      win.style.transition='none';
+      words.forEach(function(word,idx){
+        buildWord(word);
+        win.querySelectorAll('.hero-char-slot').forEach(function(s){
+          s.style.animation='none';
+          s.style.opacity='1';
+          s.style.transform='none';
+        });
+        wordWidths[idx]=win.offsetWidth; // forced sync reflow — no RAF needed
+      });
+      // Park first word at correct width, chars hidden below viewport of window
+      win.style.overflow='hidden';
+      buildWord(words[0]);
+      win.style.width=wordWidths[0]+'px';
+      win.querySelectorAll('.hero-char-slot').forEach(function(s){
+        s.style.opacity='0';
+        s.style.transform='translateY(110%)';
+      });
+    },
+    start:function(){
+      if(!win)return;
+      win.style.visibility=''; // reveal with correct width already locked in
+      animateChars('in');
+      setInterval(rotate,holdTime);
+    }
+  };
+})();
+
+</script>
+
+<div class="lightbox-overlay" id="lightbox" style="display:none;">
+  <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+  <img class="lightbox-img" id="lightbox-img" src="" alt="Testimonial" style="cursor:default;">
+</div>
+
+
+</body>
+</html>
