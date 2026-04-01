@@ -32,37 +32,30 @@ button{cursor:pointer;border:none;font-family:inherit}
 input{font-family:inherit}
 ::-webkit-scrollbar{width:0;height:0}
 
-/* ── NAV ── */
-nav{position:fixed;top:0;left:0;right:0;z-index:1000;
-  background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);
-  border-bottom:1px solid rgba(0,0,0,0.06);box-shadow:0 1px 12px rgba(0,0,0,0.04)}
-.nav-inner{max-width:1440px;margin:0 auto;padding:0 24px;
-  display:flex;align-items:center;justify-content:space-between;height:64px;gap:20px}
-.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.15rem;
-  letter-spacing:-0.5px;flex-shrink:0}
-.logo-icon{width:32px;height:32px;background:var(--forest);border-radius:8px;
-  display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--lime)}
-.nav-tag{background:var(--lime-pale);color:var(--forest);font-size:0.68rem;font-weight:700;
-  letter-spacing:.8px;text-transform:uppercase;padding:3px 9px;border-radius:var(--radius-pill)}
+/* ── MAIN NAV ── */
+#main-nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:68px;display:flex;align-items:center;background:rgba(248,249,246,0.6);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);box-shadow:0 1px 0 rgba(0,0,0,0.07);}
+#main-nav.scrolled{background:rgba(248,249,246,0.6);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);box-shadow:0 1px 0 rgba(0,0,0,0.07);}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;width:100%;padding:0 40px;position:relative;}
+.nav-logo{display:flex;align-items:center;text-decoration:none;position:relative;z-index:1}
+.nav-logo img{height:36px;width:auto;display:block;}
+.nav-tool-btn{display:inline-flex;align-items:center;gap:6px;background:#c2e03a;border:none;color:#1a2a1a;cursor:pointer;font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:0.82rem;font-weight:700;padding:10px 22px;border-radius:100px;text-decoration:none;transition:background 0.2s,transform 0.2s;white-space:nowrap;position:relative;z-index:1;}
+.nav-tool-btn:hover{background:#cfe84d;transform:scale(1.04)}
+@media(max-width:600px){.nav-inner{padding:0 16px}.nav-logo img{height:28px;}}
+
+/* ── TOOL NAV EXTRAS (status pill kept for tool functionality) ── */
 .nav-right{display:flex;align-items:center;gap:12px;flex-shrink:0}
-.status-pill{display:flex;align-items:center;gap:6px;font-size:0.78rem;
-  color:var(--text-muted);font-weight:500;padding:5px 12px;
-  border:1.5px solid var(--border);border-radius:var(--radius-pill);background:var(--white)}
+.status-pill{display:flex;align-items:center;gap:6px;font-size:0.78rem;color:var(--text-muted);font-weight:500;padding:5px 12px;border:1.5px solid var(--border);border-radius:var(--radius-pill);background:var(--white)}
 .status-pill .dot{width:6px;height:6px;border-radius:50%;background:var(--border-mid);flex-shrink:0}
 .status-pill.green .dot{background:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,.18)}
 .status-pill.amber .dot{background:#f59e0b;box-shadow:0 0 0 3px rgba(245,158,11,.18)}
-.btn-ghost{background:var(--white);color:var(--forest);border:1.5px solid var(--border);
-  padding:7px 16px;border-radius:var(--radius-pill);font-size:.82rem;font-weight:600;transition:all .2s}
+.btn-ghost{background:var(--white);color:var(--forest);border:1.5px solid var(--border);padding:7px 16px;border-radius:var(--radius-pill);font-size:.82rem;font-weight:600;transition:all .2s}
 .btn-ghost:hover{border-color:var(--forest)}
-.btn-forest{background:var(--forest);color:var(--white);
-  padding:8px 20px;border-radius:var(--radius-pill);font-size:.82rem;font-weight:700;
-  transition:all .2s;display:inline-flex;align-items:center;gap:7px}
-.btn-forest:hover{background:var(--forest-medium);transform:translateY(-1px);
-  box-shadow:0 4px 14px rgba(26,42,26,.2)}
+.btn-forest{background:var(--forest);color:var(--white);padding:8px 20px;border-radius:var(--radius-pill);font-size:.82rem;font-weight:700;transition:all .2s;display:inline-flex;align-items:center;gap:7px}
+.btn-forest:hover{background:var(--forest-medium);transform:translateY(-1px);box-shadow:0 4px 14px rgba(26,42,26,.2)}
 .btn-forest:disabled{opacity:.4;transform:none;box-shadow:none;cursor:not-allowed}
 
 /* ── PAGE ── */
-.page{padding-top:64px}
+.page{padding-top:68px}
 
 /* ── HERO HEADER ── */
 .tool-header{background:var(--white);border-bottom:1px solid var(--border);padding:40px 0 36px}
@@ -425,18 +418,12 @@ tr:hover .ka-main{background:rgba(200,243,29,.12)!important}
 <div class="page">
 
 <!-- NAV -->
-<nav>
+<nav id="main-nav">
   <div class="nav-inner">
-    <div class="logo">
-      <img src="Rank Forest PNG.png" alt="Rank Forest" style="height:38px;width:38px;border-radius:8px;display:block;flex-shrink:0">
-      <span class="nav-tag">KW Tool</span>
-    </div>
-    <div class="nav-right">
-      <div class="status-pill" id="status-pill" style="display:none">
-        <span class="dot"></span>
-        <span id="status-text">Upload files to begin</span>
-      </div>
-    </div>
+    <a href="index.html" class="nav-logo">
+      <img src="Rank Forest PNG.png" alt="Rank Forest">
+    </a>
+    <a href="apply.html" class="nav-tool-btn">Apply for Free 30 Days <span>→</span></a>
   </div>
 </nav>
 
@@ -1431,14 +1418,27 @@ function submitExportLead(){
   chk('ef-email-f',/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
   chk('ef-rev-f',rev!=='');
   if(!valid)return;
+  const btn=document.querySelector('#export-form-wrap .btn-forest');
+  btn.textContent='Preparing...';btn.disabled=true;
   const leads=JSON.parse(localStorage.getItem('rf_leads')||'[]');
   leads.push({name,email,rev,ts:Date.now(),src:'export'});
   localStorage.setItem('rf_leads',JSON.stringify(leads));
   sessionStorage.setItem('rf_session_email',email);
   if(teaserActive)doUnlockTable();
-  document.getElementById('export-form-wrap').style.display='none';
-  document.getElementById('export-thankyou').style.display='block';
-  setTimeout(()=>{closeModal('modal-export');doExportCSV();},1800);
+  fetch('https://script.google.com/macros/s/AKfycbxFcRoZpkbhFv82umLLgrtYuUzW1usT5VWApx2lp_F6uAhn0ZKfunYKdSScl_swZlN8/exec',{
+    method:'POST',mode:'no-cors',
+    headers:{'Content-Type':'text/plain'},
+    body:JSON.stringify({type:'export',name:name,email:email,revenue:rev})
+  }).then(function(){
+    document.getElementById('export-form-wrap').style.display='none';
+    document.getElementById('export-thankyou').style.display='block';
+    setTimeout(()=>{closeModal('modal-export');doExportCSV();},1800);
+  }).catch(function(){
+    btn.textContent='Download CSV';btn.disabled=false;
+    let errEl=document.getElementById('export-err');
+    if(!errEl){errEl=document.createElement('p');errEl.id='export-err';errEl.style.cssText='color:#dc2626;font-size:.8rem;margin-top:8px;';btn.after(errEl);}
+    errEl.textContent='Something went wrong. Please try again.';
+  });
 }
 
 // ── Teaser wall ──
@@ -1467,11 +1467,25 @@ function submitUnlock(){
     inp.style.borderColor='#dc2626';inp.focus();return;
   }
   inp.style.borderColor='';
+  const btn=document.querySelector('#unlock-form .btn-forest');
+  btn.textContent='Unlocking...';btn.disabled=true;
   const leads=JSON.parse(localStorage.getItem('rf_leads')||'[]');
   leads.push({email,ts:Date.now(),src:'teaser'});
   localStorage.setItem('rf_leads',JSON.stringify(leads));
   sessionStorage.setItem('rf_session_email',email);
-  doUnlockTable();
+  fetch('https://script.google.com/macros/s/AKfycbxFcRoZpkbhFv82umLLgrtYuUzW1usT5VWApx2lp_F6uAhn0ZKfunYKdSScl_swZlN8/exec',{
+    method:'POST',mode:'no-cors',
+    headers:{'Content-Type':'text/plain'},
+    body:JSON.stringify({type:'email',email:email})
+  }).then(function(){
+    btn.textContent='✓ Unlocked';
+    doUnlockTable();
+  }).catch(function(){
+    btn.textContent='Get Full Access';btn.disabled=false;
+    let errEl=document.getElementById('unlock-err');
+    if(!errEl){errEl=document.createElement('p');errEl.id='unlock-err';errEl.style.cssText='color:#dc2626;font-size:.8rem;margin-top:6px;';document.getElementById('unlock-form').after(errEl);}
+    errEl.textContent='Something went wrong. Please try again.';
+  });
 }
 function doUnlockTable(){
   teaserActive=false;
@@ -1508,6 +1522,14 @@ window.addEventListener('DOMContentLoaded',()=>{
   window.addEventListener('resize',updateScrollbar);
   window.addEventListener('resize',repositionBottomElements);
 });
+</script>
+
+<!-- NAV JS -->
+<script>
+  var mainNav = document.getElementById('main-nav');
+  window.addEventListener('scroll', function(){
+    mainNav.classList.toggle('scrolled', window.scrollY > 30);
+  }, {passive:true});
 </script>
 </body>
 </html>
