@@ -1262,10 +1262,32 @@ function exportCSV(mode='all'){
   exportMode=mode;
   const rows=mode==='selected'?display.filter(k=>selectedRows.has(k.phrase)):display;
   if(!rows.length)return;
-  if(sessionStorage.getItem('rf_session_email')){ doExportCSV(); return; }
+  const storedEmail=localStorage.getItem('rf_email')||sessionStorage.getItem('rf_session_email');
+  const storedName=localStorage.getItem('rf_name');
+  const storedRev=localStorage.getItem('rf_revenue');
+  // Scenario B: have everything — skip popup entirely
+  if(storedEmail && storedName && storedRev){
+    if(!localStorage.getItem('rf_export_sent')){
+      localStorage.setItem('rf_export_sent','true');
+      fetch('https://script.google.com/macros/s/AKfycbxFcRoZpkbhFv82umLLgrtYuUzW1usT5VWApx2lp_F6uAhn0ZKfunYKdSScl_swZlN8/exec',{
+        method:'POST',mode:'no-cors',
+        headers:{'Content-Type':'text/plain'},
+        body:JSON.stringify({type:'export',name:storedName,email:storedEmail,revenue:storedRev})
+      }).catch(()=>{});
+    }
+    doExportCSV(); return;
+  }
+  // Scenario A/C: show popup — pre-fill & hide email if we already have it
   document.getElementById('export-form-wrap').style.display='block';
   document.getElementById('export-thankyou').style.display='none';
   ['ef-name-f','ef-email-f','ef-rev-f'].forEach(id=>document.getElementById(id).classList.remove('has-err'));
+  if(storedEmail){
+    document.getElementById('eg-email').value=storedEmail;
+    document.getElementById('ef-email-f').style.display='none';
+  } else {
+    document.getElementById('eg-email').value='';
+    document.getElementById('ef-email-f').style.display='';
+  }
   openModal('modal-export');
 }
 function doExportCSV(){
@@ -1424,6 +1446,11 @@ function submitExportLead(){
   leads.push({name,email,rev,ts:Date.now(),src:'export'});
   localStorage.setItem('rf_leads',JSON.stringify(leads));
   sessionStorage.setItem('rf_session_email',email);
+  localStorage.setItem('rf_email',email);
+  localStorage.setItem('rf_name',name);
+  localStorage.setItem('rf_revenue',rev);
+  localStorage.setItem('rf_unlocked','true');
+  localStorage.setItem('rf_export_sent','true');
   if(teaserActive)doUnlockTable();
   fetch('https://script.google.com/macros/s/AKfycbxFcRoZpkbhFv82umLLgrtYuUzW1usT5VWApx2lp_F6uAhn0ZKfunYKdSScl_swZlN8/exec',{
     method:'POST',mode:'no-cors',
@@ -1443,6 +1470,7 @@ function submitExportLead(){
 
 // ── Teaser wall ──
 function initTeaser(){
+  if(localStorage.getItem('rf_unlocked')==='true'){teaserActive=false;return;}
   if(sessionStorage.getItem('rf_session_email')){teaserActive=false;return;}
   if(display.length<=TEASER_ROWS){teaserActive=false;return;}
   teaserActive=true;
@@ -1473,6 +1501,8 @@ function submitUnlock(){
   leads.push({email,ts:Date.now(),src:'teaser'});
   localStorage.setItem('rf_leads',JSON.stringify(leads));
   sessionStorage.setItem('rf_session_email',email);
+  localStorage.setItem('rf_email',email);
+  localStorage.setItem('rf_unlocked','true');
   // Unlock immediately — don't wait for network
   doUnlockTable();
   // Fire-and-forget to Google Sheets
