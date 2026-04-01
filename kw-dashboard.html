@@ -1461,30 +1461,30 @@ function showUnlockForm(){
   document.getElementById('teaser-email').focus();
 }
 function submitUnlock(){
-  const email=document.getElementById('teaser-email').value.trim();
   const inp=document.getElementById('teaser-email');
+  const email=inp.value.trim();
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
     inp.style.borderColor='#dc2626';inp.focus();return;
   }
   inp.style.borderColor='';
-  const btn=document.querySelector('#unlock-form .btn-forest');
+  const btn=inp.nextElementSibling;
   btn.textContent='Unlocking...';btn.disabled=true;
   const leads=JSON.parse(localStorage.getItem('rf_leads')||'[]');
   leads.push({email,ts:Date.now(),src:'teaser'});
   localStorage.setItem('rf_leads',JSON.stringify(leads));
   sessionStorage.setItem('rf_session_email',email);
+  // Unlock immediately — don't wait for network
+  doUnlockTable();
+  // Fire-and-forget to Google Sheets
+  console.log('Email gate: sending email:', email);
   fetch('https://script.google.com/macros/s/AKfycbxFcRoZpkbhFv82umLLgrtYuUzW1usT5VWApx2lp_F6uAhn0ZKfunYKdSScl_swZlN8/exec',{
     method:'POST',mode:'no-cors',
     headers:{'Content-Type':'text/plain'},
     body:JSON.stringify({type:'email',email:email})
   }).then(function(){
-    btn.textContent='✓ Unlocked';
-    doUnlockTable();
-  }).catch(function(){
-    btn.textContent='Get Full Access';btn.disabled=false;
-    let errEl=document.getElementById('unlock-err');
-    if(!errEl){errEl=document.createElement('p');errEl.id='unlock-err';errEl.style.cssText='color:#dc2626;font-size:.8rem;margin-top:6px;';document.getElementById('unlock-form').after(errEl);}
-    errEl.textContent='Something went wrong. Please try again.';
+    console.log('Email gate: sent successfully');
+  }).catch(function(err){
+    console.log('Email gate: fetch error',err);
   });
 }
 function doUnlockTable(){
