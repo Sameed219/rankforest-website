@@ -341,7 +341,8 @@ tr.rf-hidden td{visibility:hidden!important}
   padding:20px;opacity:0;transition:opacity .25s;pointer-events:none}
 /* Welcome modal — no close button, tighter padding, self-contained height */
 #modal-welcome{cursor:default;align-items:center}
-#modal-welcome .rf-modal{padding:36px 32px 32px;max-height:none;overflow-y:visible}
+#modal-welcome .rf-modal{padding:36px 32px 36px;max-height:none;overflow-y:visible}
+#welcome-form-wrap .rf-field{margin-bottom:10px}
 .rf-overlay.open{opacity:1;pointer-events:all}
 .rf-modal{background:var(--white);border-radius:var(--radius-lg);padding:32px;
   max-width:460px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.18);
@@ -692,9 +693,9 @@ tr.rf-hidden td{visibility:hidden!important}
 <!-- ── WELCOME MODAL ── -->
 <div class="rf-overlay" id="modal-welcome">
   <div class="rf-modal">
-    <div style="font-size:1.5rem;margin-bottom:8px;line-height:1">👋</div>
-    <h3 style="margin-bottom:6px">Quick intro before you dive in</h3>
-    <p style="margin-bottom:20px">Tell us about your business to get started.</p>
+    <div style="font-size:2rem;margin-bottom:10px;line-height:1;text-align:center">👋</div>
+    <h3 style="margin-bottom:6px;text-align:center">Quick intro before you dive in</h3>
+    <p style="margin-bottom:28px;text-align:center">Tell us about your business to get started.</p>
     <div id="welcome-form-wrap">
       <div class="rf-field" id="wf-name-f">
         <label>Your Name</label>
@@ -1647,7 +1648,7 @@ window.addEventListener('DOMContentLoaded',()=>{
   initScrollbar('rail-bot','thumb-bot');
   window.addEventListener('resize',updateScrollbar);
   window.addEventListener('resize',repositionBottomElements);
-  setTimeout(showWelcomeModal, 2500);
+  setTimeout(showWelcomeModal, 800);
 });
 </script>
 
