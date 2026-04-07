@@ -39,7 +39,9 @@
   --radius:12px;--radius-sm:8px;--radius-lg:20px;--radius-xl:28px;--radius-pill:100px;
   --shadow-sm:0 1px 3px rgba(0,0,0,0.06);--shadow:0 4px 20px rgba(0,0,0,0.08);--shadow-lg:0 16px 56px rgba(0,0,0,0.12);
 }
-html{scroll-behavior:smooth}
+html{scroll-padding-top:90px}
+/* scroll-margin-top on each nav target so the fixed nav (68px) never covers the section */
+#hero,#services,#results,#testi-shots,#how,#statement,#free-tools,#faq,#cta{scroll-margin-top:90px}
 body{font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--text-primary);background:var(--white);overflow-x:hidden}
 .container{max-width:1180px;margin:0 auto;padding:0 40px}
 
@@ -1145,25 +1147,25 @@ footer{background:#ffffff;border-top:1px solid #e8e9e4;padding:0;margin-top:0;}
   <div class="res-carousel">
     <div class="res-track">
       <!-- Set 1 -->
-      <div class="res-card"><img src="P1.webp" alt="Result 1" loading="lazy"></div>
-      <div class="res-card"><img src="P2.webp" alt="Result 2" loading="lazy"></div>
-      <div class="res-card"><img src="P3.webp" alt="Result 3" loading="lazy"></div>
-      <div class="res-card"><img src="P4.webp" alt="Result 4" loading="lazy"></div>
-      <div class="res-card"><img src="P5.webp" alt="Result 5" loading="lazy"></div>
-      <div class="res-card"><img src="P6.webp" alt="Result 6" loading="lazy"></div>
-      <div class="res-card"><img src="P7.webp" alt="Result 7" loading="lazy"></div>
-      <div class="res-card"><img src="P8.webp" alt="Result 8" loading="lazy"></div>
-      <div class="res-card"><img src="P9.webp" alt="Result 9" loading="lazy"></div>
+      <div class="res-card"><img src="P1.webp" alt="Result 1"></div>
+      <div class="res-card"><img src="P2.webp" alt="Result 2"></div>
+      <div class="res-card"><img src="P3.webp" alt="Result 3"></div>
+      <div class="res-card"><img src="P4.webp" alt="Result 4"></div>
+      <div class="res-card"><img src="P5.webp" alt="Result 5"></div>
+      <div class="res-card"><img src="P6.webp" alt="Result 6"></div>
+      <div class="res-card"><img src="P7.webp" alt="Result 7"></div>
+      <div class="res-card"><img src="P8.webp" alt="Result 8"></div>
+      <div class="res-card"><img src="P9.webp" alt="Result 9"></div>
       <!-- Set 2 (seamless loop duplicate) -->
-      <div class="res-card"><img src="P1.webp" alt="Result 1" loading="lazy"></div>
-      <div class="res-card"><img src="P2.webp" alt="Result 2" loading="lazy"></div>
-      <div class="res-card"><img src="P3.webp" alt="Result 3" loading="lazy"></div>
-      <div class="res-card"><img src="P4.webp" alt="Result 4" loading="lazy"></div>
-      <div class="res-card"><img src="P5.webp" alt="Result 5" loading="lazy"></div>
-      <div class="res-card"><img src="P6.webp" alt="Result 6" loading="lazy"></div>
-      <div class="res-card"><img src="P7.webp" alt="Result 7" loading="lazy"></div>
-      <div class="res-card"><img src="P8.webp" alt="Result 8" loading="lazy"></div>
-      <div class="res-card"><img src="P9.webp" alt="Result 9" loading="lazy"></div>
+      <div class="res-card"><img src="P1.webp" alt="Result 1"></div>
+      <div class="res-card"><img src="P2.webp" alt="Result 2"></div>
+      <div class="res-card"><img src="P3.webp" alt="Result 3"></div>
+      <div class="res-card"><img src="P4.webp" alt="Result 4"></div>
+      <div class="res-card"><img src="P5.webp" alt="Result 5"></div>
+      <div class="res-card"><img src="P6.webp" alt="Result 6"></div>
+      <div class="res-card"><img src="P7.webp" alt="Result 7"></div>
+      <div class="res-card"><img src="P8.webp" alt="Result 8"></div>
+      <div class="res-card"><img src="P9.webp" alt="Result 9"></div>
     </div>
   </div>
 </section>
@@ -1175,12 +1177,12 @@ footer{background:#ffffff;border-top:1px solid #e8e9e4;padding:0;margin-top:0;}
     <h2 class="testi-shots-hl reveal d1"><span class="sans">Don't Take Our </span><span class="serif">Word for It</span></h2>
     <p class="testi-shots-sub reveal d2">Straight from the inbox. Unedited messages from brands we work with.</p>
     <div class="testimonial-grid">
-      <div class="testimonial-item reveal d1" style="background:#ffffff;"><img src="T1.webp" alt="Client testimonial 1" loading="lazy"></div>
-      <div class="testimonial-item testimonial-item--dark reveal d1" style="background:#1a1a1a;"><img src="T2.webp" alt="Client testimonial 2" loading="lazy"></div>
-      <div class="testimonial-item testimonial-item--dark reveal d2" style="background:#1e1e1e;"><img src="T3.webp" alt="Client testimonial 3" loading="lazy"></div>
-      <div class="testimonial-item reveal d2" style="background:#ffffff;"><img src="T4.webp" alt="Client testimonial 4" loading="lazy"></div>
-      <div class="testimonial-item reveal d3" style="background:#ffffff;"><img src="T5.webp" alt="Client testimonial 5" loading="lazy"></div>
-      <div class="testimonial-item reveal d3" style="background:#1a1a1a;"><img src="T6.webp" alt="Client testimonial 6" loading="lazy" style="transform:scale(0.92);transform-origin:center center;"></div>
+      <div class="testimonial-item reveal d1" style="background:#ffffff;"><img src="T1.webp" alt="Client testimonial 1"></div>
+      <div class="testimonial-item testimonial-item--dark reveal d1" style="background:#1a1a1a;"><img src="T2.webp" alt="Client testimonial 2"></div>
+      <div class="testimonial-item testimonial-item--dark reveal d2" style="background:#1e1e1e;"><img src="T3.webp" alt="Client testimonial 3"></div>
+      <div class="testimonial-item reveal d2" style="background:#ffffff;"><img src="T4.webp" alt="Client testimonial 4"></div>
+      <div class="testimonial-item reveal d3" style="background:#ffffff;"><img src="T5.webp" alt="Client testimonial 5"></div>
+      <div class="testimonial-item reveal d3" style="background:#1a1a1a;"><img src="T6.webp" alt="Client testimonial 6" style="transform:scale(0.92);transform-origin:center center;"></div>
     </div>
   </div>
 </section>
@@ -1416,7 +1418,23 @@ footer{background:#ffffff;border-top:1px solid #e8e9e4;padding:0;margin-top:0;}
     mainNav.classList.toggle('scrolled', window.scrollY > 30);
   }, {passive:true});
 
-  // Smooth scroll for anchor links
+  // Smooth scroll for anchor links.
+  // P1-P9 and T1-T6 images are eager (not lazy) so window.load fires with
+  // correct layout — offsetTop is accurate immediately after load.
+  // Safety net: if user clicks before load, queue and fire after load.
+  var _navScroll_pending=null;
+  function _doNavScroll(el){
+    var navH=mainNav?mainNav.offsetHeight:80;
+    window.scrollTo({top:Math.max(0,el.offsetTop-navH-10),behavior:'smooth'});
+  }
+  window.addEventListener('load',function(){
+    if(_navScroll_pending){
+      requestAnimationFrame(function(){
+        _doNavScroll(_navScroll_pending);_navScroll_pending=null;
+      });
+    }
+  });
+
   document.querySelectorAll('a[href^="#"]').forEach(function(link){
     link.addEventListener('click',function(e){
       var targetId=this.getAttribute('href');
@@ -1428,9 +1446,11 @@ footer{background:#ffffff;border-top:1px solid #e8e9e4;padding:0;margin-top:0;}
       var target=document.querySelector(targetId);
       if(target){
         e.preventDefault();
-        var navH=(mainNav?mainNav.offsetHeight:80);
-        var pos=target.getBoundingClientRect().top+window.pageYOffset-navH-20;
-        window.scrollTo({top:pos,behavior:'smooth'});
+        if(document.readyState==='complete'){
+          _doNavScroll(target);
+        } else {
+          _navScroll_pending=target;
+        }
       }
     });
   });

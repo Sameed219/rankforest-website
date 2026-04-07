@@ -26,19 +26,19 @@
   --col0:28px; --col1:44px; --col2:220px; --col3:110px; --frozen:402px;
 }
 html{scroll-behavior:smooth;font-size:16px;-webkit-font-smoothing:antialiased}
-body{font-family:var(--font-body);color:var(--text-primary);background:var(--off-white);line-height:1.6}
+body{font-family:var(--font-body);color:var(--text-primary);background:#ffffff;line-height:1.6}
 a{text-decoration:none;color:inherit}
 button{cursor:pointer;border:none;font-family:inherit}
 input{font-family:inherit}
 ::-webkit-scrollbar{width:0;height:0}
 
 /* ── MAIN NAV ── */
-#main-nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:68px;display:flex;align-items:center;background:rgba(248,249,246,0.6);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);box-shadow:0 1px 0 rgba(0,0,0,0.07);}
-#main-nav.scrolled{background:rgba(248,249,246,0.6);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);box-shadow:0 1px 0 rgba(0,0,0,0.07);}
+#main-nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:68px;display:flex;align-items:center;background:#1a2a1a;box-shadow:0 1px 0 rgba(0,0,0,0.2);}
+#main-nav.scrolled{background:#1a2a1a;box-shadow:0 1px 0 rgba(0,0,0,0.2);}
 .nav-inner{display:flex;align-items:center;justify-content:space-between;width:100%;padding:0 40px;position:relative;}
 .nav-logo{display:flex;align-items:center;text-decoration:none;position:relative;z-index:1}
 .nav-logo img{height:36px;width:auto;display:block;}
-.nav-tool-btn{display:inline-flex;align-items:center;gap:6px;background:#c2e03a;border:none;color:#1a2a1a;cursor:pointer;font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:0.82rem;font-weight:700;padding:10px 22px;border-radius:100px;text-decoration:none;transition:background 0.2s,transform 0.2s;white-space:nowrap;position:relative;z-index:1;}
+.nav-tool-btn{display:inline-flex;align-items:center;gap:6px;background:#c8f31d;border:none;color:#1a2a1a;cursor:pointer;font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:0.82rem;font-weight:700;padding:10px 22px;border-radius:100px;text-decoration:none;transition:background 0.2s,transform 0.2s;white-space:nowrap;position:relative;z-index:1;}
 .nav-tool-btn:hover{background:#cfe84d;transform:scale(1.04)}
 @media(max-width:600px){.nav-inner{padding:0 16px}.nav-logo img{height:28px;}}
 
@@ -55,24 +55,25 @@ input{font-family:inherit}
 .btn-forest:disabled{opacity:.4;transform:none;box-shadow:none;cursor:not-allowed}
 
 /* ── PAGE ── */
-.page{padding-top:68px}
+.page{padding-top:68px;background-image:radial-gradient(circle,rgba(45,74,45,0.055) 1.5px,transparent 1.5px);background-size:28px 28px}
 
 /* ── HERO HEADER ── */
-.tool-header{background:var(--white);border-bottom:1px solid var(--border);padding:40px 0 36px}
-.hdr-inner{max-width:1440px;margin:0 auto;padding:0 24px}
-.section-tag{display:inline-flex;align-items:center;gap:7px;font-size:.72rem;font-weight:700;
-  letter-spacing:1px;text-transform:uppercase;color:var(--forest-medium);margin-bottom:10px}
-.section-tag::before{content:'';width:18px;height:2px;background:var(--lime);border-radius:2px}
-.tool-header h1{font-size:2rem;font-weight:800;letter-spacing:-1px;line-height:1.1;margin-bottom:6px}
-.tool-header p{font-size:.9rem;color:var(--text-secondary);max-width:480px}
+.tool-header{background:transparent;padding:56px 0 40px}
+.hdr-inner{max-width:1440px;margin:0 auto;padding:0 24px;text-align:center}
+.tool-header h1{font-size:3rem;font-weight:800;letter-spacing:-2px;line-height:1.08;margin-bottom:10px}
+.demo-subtext{font-size:.9rem;font-weight:400;color:#6b7280;margin-top:0;line-height:1.45}
+.demo-link{font-weight:700;color:#1a1a1a;text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px;cursor:pointer;transition:color .15s}
+.demo-link:hover{color:var(--forest-medium)}
 
 /* ── MAIN ── */
-.main{max-width:1440px;margin:0 auto;padding:28px 24px 80px}
+.main{max-width:1440px;margin:0 auto;padding:0 24px 60px}
 
 /* ── STEP CARDS (upload) ── */
 .steps-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
-.step-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius-lg);
+.step-card{background:var(--white);border:1.5px solid var(--border);border-radius:14px;
+  box-shadow:0 1px 4px rgba(0,0,0,0.04);
   padding:20px;transition:all .2s;position:relative;overflow:hidden}
+.step-card:hover{border-color:#c8f31d;transform:translateY(-2px);box-shadow:0 4px 20px rgba(200,243,29,0.15)}
 .step-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--light-gray)}
 .step-card.loaded::before{background:var(--lime)}
 .step-card.loaded{border-color:rgba(200,243,29,.35);box-shadow:0 2px 16px rgba(200,243,29,.1)}
@@ -83,11 +84,11 @@ input{font-family:inherit}
 .step-card.loaded .step-check{display:flex}
 .step-card h3{font-size:.92rem;font-weight:700;letter-spacing:-.2px;margin-bottom:2px}
 .step-card p{font-size:.78rem;color:var(--text-secondary);margin-bottom:12px}
-.dropzone{border:1.5px dashed var(--border-mid);border-radius:var(--radius);
+.dropzone{border:1.5px dashed rgba(200,243,29,0.4);border-radius:14px;
   padding:20px 16px;text-align:center;cursor:pointer;transition:all .2s;
   background:var(--off-white);min-height:90px;display:flex;flex-direction:column;
   align-items:center;justify-content:center}
-.dropzone:hover,.dropzone.drag{border-color:var(--lime-dark);background:var(--lime-pale)}
+.dropzone:hover,.dropzone.drag{border-color:#c8f31d;background:rgba(200,243,29,0.05)}
 .dropzone.has-file{border-style:solid;border-color:var(--lime-dark);background:rgba(200,243,29,.06)}
 .dz-icon{font-size:22px;margin-bottom:6px}
 .dz-label{font-size:.8rem;font-weight:600;display:block;margin-bottom:2px}
@@ -95,6 +96,7 @@ input{font-family:inherit}
 .dz-name{font-size:.72rem;font-family:var(--font-mono);color:var(--forest-medium);
   font-weight:700;margin-top:4px;display:none}
 .step-card.loaded .dz-name{display:block}
+
 
 /* ── ASIN PREVIEW + RUN BUTTON ── */
 .asin-preview-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:20px 24px;margin-bottom:20px}
@@ -104,7 +106,7 @@ input{font-family:inherit}
 .asin-preview-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
 .asin-pchip{background:var(--lime-pale);color:var(--forest);border:1.5px solid #c8e870;border-radius:var(--radius-pill);padding:4px 14px;font-size:.73rem;font-weight:600;font-family:var(--font-mono)}
 .asin-preview-note{color:var(--text-muted);font-size:.78rem}
-.run-section{text-align:center;padding:8px 0 32px}
+.run-section{text-align:center;padding:4px 0 24px}
 .btn-run-lg{font-size:1rem!important;padding:14px 44px!important;border-radius:var(--radius-pill)!important;letter-spacing:.01em}
 .run-hint{color:var(--text-muted);font-size:.8rem;margin-top:10px}
 
@@ -194,6 +196,16 @@ tbody tr:hover .fc0,tbody tr:hover .fc1,tbody tr:hover .fc2,tbody tr:hover .fc3{
 /* All ASIN header rows use tr.asin-row */
 .asin-row-top{background:var(--off-white)!important}
 .asin-row-top th{background:var(--off-white)!important;vertical-align:top;padding:10px 12px!important;font-size:inherit}
+/* Each <th> in the two sticky header rows must be individually sticky */
+#asin-card-row th{position:sticky;top:0;z-index:6}
+#kw-label-row th{position:sticky;top:0;z-index:8}
+/* Corner cells: frozen (left) AND sticky-top — need highest z-index */
+#asin-card-row .fc0,#asin-card-row .fc1,#asin-card-row .fc2,#asin-card-row .fc3{z-index:11}
+#kw-label-row .fc0,#kw-label-row .fc1,#kw-label-row .fc2,#kw-label-row .fc3{z-index:13}
+/* KEY FIX: give <thead> its own stacking context so ALL thead cells always
+   paint above tbody rows — without this, non-positioned tbody <td> cells
+   (like .ka ASIN rank cells) paint over sticky header cells due to DOM order */
+#kwt-head{position:relative;z-index:20}
 
 /* The ASIN card inside each th — contains all brand info */
 .asin-card{text-align:left;min-width:150px}
@@ -221,8 +233,8 @@ tbody tr:hover .fc0,tbody tr:hover .fc1,tbody tr:hover .fc2,tbody tr:hover .fc3{
 .tier-lbl{color:var(--text-muted);font-weight:700;font-size:.62rem;text-transform:uppercase;letter-spacing:.4px}
 .tier-kw{font-family:var(--font-mono);font-weight:700;color:var(--text-primary);font-size:.72rem}
 .tier-sv{font-family:var(--font-mono);color:var(--lime-dark);font-size:.68rem}
-/* Main ASIN highlight in thead */
-.main-asin-th{background:rgba(200,243,29,.07)!important}
+/* Main ASIN highlight in thead — solid white, opaque so scrolled rows don't bleed through */
+.main-asin-th{background:#ffffff!important}
 .main-asin-th .asin-num{color:var(--lime-dark)}
 
 /* Metric column th (the tall label cell) */
@@ -277,6 +289,9 @@ tr:hover .ka-main{background:rgba(200,243,29,.12)!important}
 
 /* Virtual scroll spacers */
 .vs td{background:transparent!important;border:none!important;height:auto}
+/* Rows rendered in the buffer zone but sitting behind the sticky header —
+   hide all cell content so nothing bleeds through the sticky header cells */
+tr.rf-hidden td{visibility:hidden!important}
 
 /* ── NO DATA ── */
 .no-data{text-align:center;padding:48px 20px;color:var(--text-muted);font-size:.9rem}
@@ -297,11 +312,12 @@ tr:hover .ka-main{background:rgba(200,243,29,.12)!important}
   border-radius:var(--radius-lg);padding:18px 24px;margin-bottom:20px;flex-wrap:wrap}
 .cta-inline-text h4{font-size:.95rem;font-weight:800;margin-bottom:4px;letter-spacing:-.2px}
 .cta-inline-text p{font-size:.78rem;color:var(--text-secondary);max-width:480px;line-height:1.5}
-.btn-lime{background:var(--lime);color:var(--forest);font-weight:800;font-size:.85rem;
-  padding:10px 22px;border-radius:var(--radius-pill);white-space:nowrap;
+.btn-lime{background:#c8f31d;color:#1a2a1a;font-weight:700;font-size:.85rem;
+  padding:10px 22px;border-radius:100px;white-space:nowrap;
   transition:all .2s;display:inline-block;flex-shrink:0}
-.btn-lime:hover{background:var(--lime-soft);transform:translateY(-1px);
-  box-shadow:0 4px 12px rgba(200,243,29,.4)}
+.btn-lime:hover{background:#cfe84d;transform:translateY(-2px);
+  box-shadow:0 8px 28px rgba(200,243,29,0.3)}
+.btn-lime:disabled,.btn-lime[disabled]{opacity:.4;transform:none!important;box-shadow:none!important;cursor:not-allowed}
 
 /* Sticky CTA bar */
 .sticky-cta{position:fixed;bottom:0;left:0;right:0;z-index:900;
@@ -323,6 +339,9 @@ tr:hover .ka-main{background:rgba(200,243,29,.12)!important}
 .rf-overlay{position:fixed;inset:0;z-index:1100;background:rgba(0,0,0,.45);
   backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;
   padding:20px;opacity:0;transition:opacity .25s;pointer-events:none}
+/* Welcome modal — no close button, tighter padding, self-contained height */
+#modal-welcome{cursor:default;align-items:center}
+#modal-welcome .rf-modal{padding:36px 32px 32px;max-height:none;overflow-y:visible}
 .rf-overlay.open{opacity:1;pointer-events:all}
 .rf-modal{background:var(--white);border-radius:var(--radius-lg);padding:32px;
   max-width:460px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.18);
@@ -412,6 +431,37 @@ tr:hover .ka-main{background:rgba(200,243,29,.12)!important}
   .sticky-cta{flex-direction:column;gap:10px;padding:14px 50px 14px 16px;text-align:center}
   .rf-modal{padding:24px}
 }
+
+/* ── NAV CENTER LINKS ── */
+.nav-center-links{display:flex;align-items:center;gap:24px;position:absolute;left:50%;transform:translateX(-50%)}
+.nav-center-link{font-size:.82rem;font-weight:600;color:rgba(255,255,255,0.65);text-decoration:none;transition:color .2s;white-space:nowrap}
+.nav-center-link:hover{color:#c8f31d}
+.nav-right-group{display:flex;align-items:center;gap:12px;position:relative;z-index:1}
+.nav-hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;width:28px}
+.nav-hamburger span{display:block;height:2px;background:rgba(255,255,255,0.8);border-radius:2px;transition:all .25s}
+
+/* ── MOBILE OVERLAY ── */
+.mobile-overlay{display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.5);backdrop-filter:blur(4px)}
+.mobile-overlay.open{display:flex;align-items:flex-start;justify-content:flex-end}
+.mobile-menu{background:#fff;width:280px;min-height:100vh;padding:24px 20px;display:flex;flex-direction:column}
+.mobile-menu-close{align-self:flex-end;background:none;border:none;font-size:18px;cursor:pointer;padding:4px;color:#1a2a1a;margin-bottom:24px;line-height:1}
+.mobile-menu-nav{display:flex;flex-direction:column;gap:0;margin-bottom:28px}
+.mobile-menu-link{font-size:1rem;font-weight:600;color:#1a2a1a;text-decoration:none;padding:14px 0;border-bottom:1px solid #e8e9e4;transition:color .15s}
+.mobile-menu-link:hover{color:#9abf00}
+.mobile-menu-cta{display:inline-flex;align-items:center;justify-content:center;background:#c8f31d;color:#1a2a1a;font-weight:700;font-size:.9rem;padding:13px 24px;border-radius:100px;text-decoration:none;transition:background .2s;text-align:center}
+.mobile-menu-cta:hover{background:#cfe84d}
+@media(max-width:900px){
+  .nav-center-links{display:none}
+  .nav-hamburger{display:flex}
+}
+
+@keyframes demoPulse{0%,100%{box-shadow:0 0 0 0 rgba(200,243,29,0.5)}60%{box-shadow:0 0 0 8px rgba(200,243,29,0)}}
+@keyframes sweepIn{to{transform:scaleX(1)}}
+
+/* ── DEMO BANNER ── */
+.demo-banner{background:rgba(200,243,29,0.1);border:1.5px solid rgba(200,243,29,0.3);border-radius:10px;padding:10px 16px;margin-bottom:16px;font-size:.83rem;color:#2d4a2d;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.demo-banner-link{color:#1a2a1a;font-weight:700;text-decoration:underline;text-underline-offset:2px;margin-left:4px}
+.demo-banner-link:hover{color:#9abf00}
 </style>
 </head>
 <body>
@@ -421,24 +471,52 @@ tr:hover .ka-main{background:rgba(200,243,29,.12)!important}
 <nav id="main-nav">
   <div class="nav-inner">
     <a href="index.html" class="nav-logo">
-      <img src="Rank Forest PNG.png" alt="Rank Forest">
+      <img src="Rank Forest White Transparent Logo.png" alt="Rank Forest">
     </a>
-    <a href="apply.html" class="nav-tool-btn">Apply for Free 30 Days <span>→</span></a>
+    <div class="nav-center-links">
+      <a href="index.html" class="nav-center-link">Home</a>
+      <a href="index.html#services" class="nav-center-link">Services</a>
+      <a href="index.html#results" class="nav-center-link">Case Studies</a>
+      <a href="index.html#testi-shots" class="nav-center-link">Testimonials</a>
+      <a href="index.html#free-tools" class="nav-center-link">Free Tools</a>
+      <a href="index.html#cta" class="nav-center-link">Contact Us</a>
+    </div>
+    <div class="nav-right-group">
+      <a href="apply.html" class="nav-tool-btn">Apply for Free 30 Days <span>→</span></a>
+      <button class="nav-hamburger" id="nav-hamburger" onclick="toggleMobileMenu()" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
 </nav>
+
+<!-- MOBILE MENU OVERLAY -->
+<div class="mobile-overlay" id="mobile-overlay" onclick="closeMobileMenu()">
+  <div class="mobile-menu" onclick="event.stopPropagation()">
+    <button class="mobile-menu-close" onclick="closeMobileMenu()">✕</button>
+    <nav class="mobile-menu-nav">
+      <a href="index.html" class="mobile-menu-link">Home</a>
+      <a href="index.html#services" class="mobile-menu-link">Services</a>
+      <a href="index.html#results" class="mobile-menu-link">Case Studies</a>
+      <a href="index.html#testi-shots" class="mobile-menu-link">Testimonials</a>
+      <a href="index.html#free-tools" class="mobile-menu-link">Free Tools</a>
+      <a href="index.html#cta" class="mobile-menu-link">Contact Us</a>
+    </nav>
+    <a href="apply.html" class="mobile-menu-cta">Apply for Free 30 Days →</a>
+  </div>
+</div>
 
 <!-- AGENCY BIO STRIP -->
 <div class="agency-strip">
   Built by <strong>Rank Forest</strong> — Amazon PPC agency helping brands scale profitably on Amazon
-  <a href="#learn-more" target="_blank" rel="noopener">Learn more →</a>
+  <a href="index.html" rel="noopener">Learn more →</a>
 </div>
 
 <!-- HERO -->
 <div class="tool-header">
   <div class="hdr-inner">
-    <div class="section-tag">Amazon Research</div>
     <h1>KW Research Dashboard</h1>
-    <p>Upload your Helium 10 X-Ray and Cerebro exports — your full keyword research table builds automatically.</p>
+    <p class="demo-subtext">Don't have your own exports? <a href="#" class="demo-link" id="demo-link" onclick="loadDemoData();return false;">Try with sample data</a></p>
   </div>
 </div>
 
@@ -498,7 +576,7 @@ tr:hover .ka-main{background:rgba(200,243,29,.12)!important}
 
   <!-- ANALYZE BUTTON -->
   <div class="run-section" id="run-section">
-    <button class="btn-forest btn-run-lg" id="btn-run" disabled onclick="processData()">Analyze Keywords &nbsp;→</button>
+    <button class="btn-lime btn-run-lg" id="btn-run" disabled onclick="processData()">Analyze Keywords &nbsp;→</button>
     <p class="run-hint">Cerebro required · ASINs auto-detected from your export</p>
   </div>
 
@@ -606,44 +684,43 @@ tr:hover .ka-main{background:rgba(200,243,29,.12)!important}
       </div>
     </div>
 
-    <!-- TEASER WALL (below table) -->
-    <div id="teaser-wall" class="teaser-wall" style="display:none">
-      <p class="teaser-count-txt">Showing <strong>7</strong> of <strong><span id="teaser-count">0</span></strong> keywords</p>
-      <p class="teaser-sub">Enter your email to unlock all keywords — free, no credit card needed.</p>
-      <div id="teaser-cta-wrap">
-        <button class="btn-forest" id="btn-unlock" onclick="showUnlockForm()">Unlock Full Table — Free</button>
-      </div>
-      <div id="unlock-form" style="display:none" class="teaser-email-row">
-        <input type="email" id="teaser-email" placeholder="your@email.com">
-        <button class="btn-forest" onclick="submitUnlock()">Get Full Access</button>
-      </div>
-    </div>
 
   </div><!-- /results -->
 </div><!-- /main -->
 </div><!-- /page -->
 
-<!-- ── LEAD GATE MODAL (CSV Export) ── -->
-<div class="rf-overlay" id="modal-export">
+<!-- ── WELCOME MODAL ── -->
+<div class="rf-overlay" id="modal-welcome">
   <div class="rf-modal">
-    <button class="rf-modal-close" onclick="closeModal('modal-export')">✕</button>
-    <h3>Download Your Keyword Research</h3>
-    <p>Enter your details below. We'll send you useful insights — never spam.</p>
-    <div id="export-form-wrap">
-      <div class="rf-field" id="ef-name-f">
+    <div style="font-size:1.5rem;margin-bottom:8px;line-height:1">👋</div>
+    <h3 style="margin-bottom:6px">Quick intro before you dive in</h3>
+    <p style="margin-bottom:20px">Tell us about your business to get started.</p>
+    <div id="welcome-form-wrap">
+      <div class="rf-field" id="wf-name-f">
         <label>Your Name</label>
-        <input type="text" id="eg-name" placeholder="Jane Smith">
-        <span class="err-msg">Please enter your name</span>
+        <input type="text" id="wg-name" placeholder="Jane Smith">
+        <span class="err-msg">This field is required</span>
       </div>
-      <div class="rf-field" id="ef-email-f">
+      <div class="rf-field" id="wf-email-f">
         <label>Email Address</label>
-        <input type="email" id="eg-email" placeholder="jane@brand.com">
-        <span class="err-msg">Please enter a valid email address</span>
+        <input type="email" id="wg-email" placeholder="jane@brand.com">
+        <span class="err-msg">This field is required</span>
       </div>
-      <div class="rf-field" id="ef-rev-f">
+      <div class="rf-field" id="wf-type-f">
+        <label>I am a...</label>
+        <select id="wg-type">
+          <option value="">Select type…</option>
+          <option>Amazon Seller</option>
+          <option>PPC Freelancer / Consultant</option>
+          <option>Other</option>
+        </select>
+        <span class="err-msg">Please select a type</span>
+      </div>
+      <div class="rf-field" id="wf-rev-f">
         <label>Monthly Amazon Revenue</label>
-        <select id="eg-rev">
+        <select id="wg-rev">
           <option value="">Select range…</option>
+          <option>Just starting out</option>
           <option>Under $10K</option>
           <option>$10K – $50K</option>
           <option>$50K – $100K</option>
@@ -652,12 +729,7 @@ tr:hover .ka-main{background:rgba(200,243,29,.12)!important}
         </select>
         <span class="err-msg">Please select a range</span>
       </div>
-      <button class="btn-forest rf-btn-full" onclick="submitExportLead()">Download CSV</button>
-    </div>
-    <div id="export-thankyou" class="rf-thankyou" style="display:none">
-      <div class="ty-icon">✅</div>
-      <h4>Thanks! Your download is starting…</h4>
-      <p>We'll be in touch with insights tailored to your product category.</p>
+      <button class="btn-lime rf-btn-full" id="btn-welcome-submit" onclick="submitWelcome()">Let me in →</button>
     </div>
   </div>
 </div>
@@ -765,6 +837,7 @@ function checkReady(){
   if(cerebroRaw) showAsinPreview();
   if(xrayRaw&&cerebroRaw){
     if(btnRun)btnRun.disabled=false;
+    localStorage.setItem('rf_has_used_tool','true');
   } else {
     if(btnRun)btnRun.disabled=true;
   }
@@ -873,7 +946,6 @@ function _process(){
   applyFilters();
   showStickyCta();
   showExportFab();
-  initTeaser();
   document.getElementById('results').scrollIntoView({behavior:'smooth'});
 }
 
@@ -1014,8 +1086,8 @@ function buildThead(){
   let html='';
 
   if(showAsinCards){
-    // Single row with ASIN cards built into each ASIN <th>
-    html+='<tr>';
+    // Single row with ASIN cards built into each ASIN <th> — sticky so it never scrolls away
+    html+='<tr id="asin-card-row">';
     // Checkbox col placeholder
     html+=`<th class="fc0 hdr-fc" style="background:var(--off-white);border-bottom:1px solid var(--border)"></th>`;
     // Frozen col 1: #
@@ -1070,8 +1142,8 @@ function buildThead(){
     html+='</tr>';
   }
 
-  // Column label row (dark forest — always shown, sticky)
-  html+='<tr style="position:sticky;top:0;z-index:8">';
+  // Column label row (dark forest — always shown, sticky below ASIN row)
+  html+='<tr id="kw-label-row">';
   // Checkbox col — blank dark header
   html+=`<th class="fc0" style="background:var(--forest);border-bottom:none"></th>`;
   // Sort helpers
@@ -1098,6 +1170,22 @@ function buildThead(){
   html+='</tr>';
 
   document.getElementById('kwt-head').innerHTML=html;
+  // Push the label row down to sit flush below the ASIN card row
+  requestAnimationFrame(updateStickyRows);
+}
+
+function updateStickyRows(){
+  const asinRow=document.getElementById('asin-card-row');
+  const labelRow=document.getElementById('kw-label-row');
+  if(!labelRow)return;
+  const offset=asinRow?asinRow.offsetHeight:0;
+  // Set top on each <th> so every cell forms its own stacking context
+  // and opaquely covers tbody content while scrolling
+  Array.from(labelRow.querySelectorAll('th')).forEach(th=>th.style.top=offset+'px');
+  // Also pin asin-card-row cells at top:0 explicitly (CSS default, but be explicit)
+  if(asinRow){
+    Array.from(asinRow.querySelectorAll('th')).forEach(th=>th.style.top='0px');
+  }
 }
 
 // ═══════════════════════════════════════════════════════
@@ -1105,7 +1193,7 @@ function buildThead(){
 // ═══════════════════════════════════════════════════════
 function renderVirt(scrollTop, viewH){
   if(!S)return;
-  const total=teaserActive?Math.min(display.length,TEASER_ROWS):display.length;
+  const total=display.length;
   const CC=4+METRIC_DEFS.length+S.nAsins;
   if(!total){
     document.getElementById('kwt-body').innerHTML=`<tr><td colspan="${CC}" class="no-data">No keywords match the current filters.</td></tr>`;
@@ -1114,6 +1202,9 @@ function renderVirt(scrollTop, viewH){
   const s=Math.max(0,Math.floor(scrollTop/ROW_H)-BUFFER);
   const e=Math.min(total,Math.ceil((scrollTop+(viewH||500))/ROW_H)+BUFFER);
   const topH=s*ROW_H, botH=(total-e)*ROW_H;
+  // First row whose top edge is below the sticky header (nothing hidden behind it)
+  // Row i viewport-y = (headH + i*ROW_H) - scrollTop; visible when > headH => i > scrollTop/ROW_H
+  const firstSafeRow=Math.ceil(scrollTop/ROW_H);
   const{allAsins,mainAsin}=S;
   let html='';
   if(topH) html+=`<tr class="vs" style="height:${topH}px"><td colspan="${CC}"></td></tr>`;
@@ -1121,6 +1212,8 @@ function renderVirt(scrollTop, viewH){
   for(let i=s;i<e;i++){
     const k=display[i],alt=i%2===1;
     const sel=selectedRows.has(k.phrase);
+    // If this row is behind the sticky header, hide its content so it can't bleed through
+    const hiddenCls=i<firstSafeRow?' rf-hidden':'';
     const bg=alt?'kd-alt':'';
     const bw=Math.min(k.svBar||0,100).toFixed(1);
     const r4c=k.rel4>=8?'rel-hi':k.rel4>=4?'rel-md':'rel-lo';
@@ -1135,7 +1228,7 @@ function renderVirt(scrollTop, viewH){
       const m=a===mainAsin?'ka-main':'';
       ac+=`<td class="ka ${m}${alt?' kd-alt':''}"><span class="${rc}">${rv}</span></td>`;
     }
-    html+=`<tr class="kw-row${sel?' selected':''}" data-i="${i}" onclick="if(event.target.tagName!=='A'&&event.target.tagName!=='INPUT')toggleRow(${i})">
+    html+=`<tr class="kw-row${sel?' selected':''}${hiddenCls}" data-i="${i}" onclick="if(event.target.tagName!=='A'&&event.target.tagName!=='INPUT')toggleRow(${i})">
 <td class="kd fc0 ${bg}"><input type="checkbox" class="row-cb"${sel?' checked':''} onclick="event.stopPropagation();toggleRow(${i})"></td>
 <td class="kd kd-num fc1 ${bg}">${i+1}</td>
 <td class="kd kd-kw fc2 ${bg}"><span class="kw-text">${esc(k.phrase)}</span><a href="https://www.amazon.com/s?k=${encodeURIComponent(k.phrase)}" target="_blank" rel="noopener" class="kw-link">↗</a></td>
@@ -1169,9 +1262,20 @@ function onScroll(){
   scrollRaf=requestAnimationFrame(()=>{
     scrollRaf=null;
     const el=document.getElementById('tscroll');
-    if(Math.abs(el.scrollTop-lastST)>ROW_H*2){
-      lastST=el.scrollTop;
-      renderVirt(el.scrollTop,el.clientHeight);
+    const st=el.scrollTop;
+    // Lightweight rf-hidden update on every frame:
+    // rows behind the sticky header must be invisible; rows below it must be visible.
+    // This runs even when the full virtual re-render is skipped, so scrolling back up
+    // correctly unhides rows that have emerged from behind the sticky header.
+    const firstSafe=Math.ceil(st/ROW_H);
+    document.querySelectorAll('#kwt-body tr.kw-row').forEach(tr=>{
+      const i=parseInt(tr.dataset.i,10);
+      tr.classList.toggle('rf-hidden',i<firstSafe);
+    });
+    // Full virtual re-render only when rows enter/leave the rendered window
+    if(Math.abs(st-lastST)>ROW_H*2){
+      lastST=st;
+      renderVirt(st,el.clientHeight);
     }
   });
 }
@@ -1260,35 +1364,19 @@ function initScrollbar(railId,thumbId){
 function exportCSV(mode='all'){
   if(!S)return;
   exportMode=mode;
-  const rows=mode==='selected'?display.filter(k=>selectedRows.has(k.phrase)):display;
-  if(!rows.length)return;
-  const storedEmail=localStorage.getItem('rf_email')||sessionStorage.getItem('rf_session_email');
-  const storedName=localStorage.getItem('rf_name');
-  const storedRev=localStorage.getItem('rf_revenue');
-  // Scenario B: have everything — skip popup entirely
-  if(storedEmail && storedName && storedRev){
-    if(!localStorage.getItem('rf_export_sent')){
-      localStorage.setItem('rf_export_sent','true');
-      fetch('https://script.google.com/macros/s/AKfycbxFcRoZpkbhFv82umLLgrtYuUzW1usT5VWApx2lp_F6uAhn0ZKfunYKdSScl_swZlN8/exec',{
-        method:'POST',mode:'no-cors',
-        headers:{'Content-Type':'text/plain'},
-        body:JSON.stringify({type:'export',name:storedName,email:storedEmail,revenue:storedRev})
-      }).catch(()=>{});
-    }
-    doExportCSV(); return;
+  // Fire-and-forget to sheets if we have email from welcome modal
+  const email=localStorage.getItem('rf_email')||'';
+  const name=localStorage.getItem('rf_name')||'';
+  const rev=localStorage.getItem('rf_revenue')||'';
+  if(email&&!localStorage.getItem('rf_export_sent')){
+    localStorage.setItem('rf_export_sent','true');
+    fetch('https://script.google.com/macros/s/AKfycbxFcRoZpkbhFv82umLLgrtYuUzW1usT5VWApx2lp_F6uAhn0ZKfunYKdSScl_swZlN8/exec',{
+      method:'POST',mode:'no-cors',
+      headers:{'Content-Type':'text/plain'},
+      body:JSON.stringify({type:'export',name,email,revenue:rev})
+    }).catch(()=>{});
   }
-  // Scenario A/C: show popup — pre-fill & hide email if we already have it
-  document.getElementById('export-form-wrap').style.display='block';
-  document.getElementById('export-thankyou').style.display='none';
-  ['ef-name-f','ef-email-f','ef-rev-f'].forEach(id=>document.getElementById(id).classList.remove('has-err'));
-  if(storedEmail){
-    document.getElementById('eg-email').value=storedEmail;
-    document.getElementById('ef-email-f').style.display='none';
-  } else {
-    document.getElementById('eg-email').value='';
-    document.getElementById('ef-email-f').style.display='';
-  }
-  openModal('modal-export');
+  doExportCSV();
 }
 function doExportCSV(){
   if(!S)return;
@@ -1407,8 +1495,6 @@ function repositionBottomElements(){
 // ═══════════════════════════════════════════════════════
 // CONVERSION FEATURES
 // ═══════════════════════════════════════════════════════
-const TEASER_ROWS=7;
-let teaserActive=false;
 let ctaShown=false;
 
 // ── Modal helpers ──
@@ -1425,111 +1511,121 @@ function dismissStickyCta(){
   repositionBottomElements();
 }
 
-// ── CSV lead gate ──
-function submitExportLead(){
-  const name=document.getElementById('eg-name').value.trim();
-  const email=document.getElementById('eg-email').value.trim();
-  const rev=document.getElementById('eg-rev').value;
+// ── Welcome modal ──
+function showWelcomeModal(){
+  if(localStorage.getItem('rf_intro_done')==='true')return;
+  openModal('modal-welcome');
+}
+function submitWelcome(){
+  const name=document.getElementById('wg-name').value.trim();
+  const email=document.getElementById('wg-email').value.trim();
+  const type=document.getElementById('wg-type').value;
+  const rev=document.getElementById('wg-rev').value;
   let valid=true;
-  const chk=(fieldId,ok)=>{
-    const f=document.getElementById(fieldId);
-    f.classList.toggle('has-err',!ok);
-    if(!ok)valid=false;
-  };
-  chk('ef-name-f',name.length>0);
-  chk('ef-email-f',/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
-  chk('ef-rev-f',rev!=='');
+  const chk=(fieldId,ok)=>{const f=document.getElementById(fieldId);f.classList.toggle('has-err',!ok);if(!ok)valid=false;};
+  chk('wf-name-f',name.length>0);
+  chk('wf-email-f',/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
   if(!valid)return;
-  const btn=document.querySelector('#export-form-wrap .btn-forest');
-  btn.textContent='Preparing...';btn.disabled=true;
-  const leads=JSON.parse(localStorage.getItem('rf_leads')||'[]');
-  leads.push({name,email,rev,ts:Date.now(),src:'export'});
-  localStorage.setItem('rf_leads',JSON.stringify(leads));
-  sessionStorage.setItem('rf_session_email',email);
-  localStorage.setItem('rf_email',email);
+  const btn=document.getElementById('btn-welcome-submit');
+  btn.textContent='Getting ready...';btn.disabled=true;
   localStorage.setItem('rf_name',name);
+  localStorage.setItem('rf_email',email);
+  localStorage.setItem('rf_type',type);
   localStorage.setItem('rf_revenue',rev);
-  localStorage.setItem('rf_unlocked','true');
-  localStorage.setItem('rf_export_sent','true');
-  if(teaserActive)doUnlockTable();
+  localStorage.setItem('rf_intro_done','true');
   fetch('https://script.google.com/macros/s/AKfycbxFcRoZpkbhFv82umLLgrtYuUzW1usT5VWApx2lp_F6uAhn0ZKfunYKdSScl_swZlN8/exec',{
     method:'POST',mode:'no-cors',
     headers:{'Content-Type':'text/plain'},
-    body:JSON.stringify({type:'export',name:name,email:email,revenue:rev})
-  }).then(function(){
-    document.getElementById('export-form-wrap').style.display='none';
-    document.getElementById('export-thankyou').style.display='block';
-    setTimeout(()=>{closeModal('modal-export');doExportCSV();},1800);
-  }).catch(function(){
-    btn.textContent='Download CSV';btn.disabled=false;
-    let errEl=document.getElementById('export-err');
-    if(!errEl){errEl=document.createElement('p');errEl.id='export-err';errEl.style.cssText='color:#dc2626;font-size:.8rem;margin-top:8px;';btn.after(errEl);}
-    errEl.textContent='Something went wrong. Please try again.';
+    body:JSON.stringify({type:'welcome',name,email,userType:type,revenue:rev})
+  }).then(()=>{
+    closeModal('modal-welcome');
+  }).catch(()=>{
+    closeModal('modal-welcome');
   });
 }
 
-// ── Teaser wall ──
-function initTeaser(){
-  if(localStorage.getItem('rf_unlocked')==='true'){teaserActive=false;return;}
-  if(sessionStorage.getItem('rf_session_email')){teaserActive=false;return;}
-  if(display.length<=TEASER_ROWS){teaserActive=false;return;}
-  teaserActive=true;
-  document.getElementById('teaser-count').textContent=display.length.toLocaleString();
-  document.getElementById('teaser-wall').style.display='block';
-  // Shrink the scroll container to exactly fit the teaser rows — no blank space
-  requestAnimationFrame(()=>{
-    const thead=document.getElementById('kwt-head');
-    const theadH=thead?thead.offsetHeight:100;
-    document.getElementById('tscroll').style.height=(theadH+TEASER_ROWS*ROW_H+2)+'px';
+// ═══════════════════════════════════════════════════════
+// DEMO MODE
+// ═══════════════════════════════════════════════════════
+const DEMO_COMP_ASINS=["B098BNQ44M","B00HHLNRVE","B08WHLDMNX","B0DJ28XG7Z","B09QBDRCRK","B0CTW96FZ8","B092D1DP4D","B0DG3SL8ZN","B07F7KPVMH"];
+
+function loadDemoData(){
+  // Build X-Ray raw rows (using H10 column names)
+  xrayRaw=[
+    {"ASIN":"B0B4NK47L4","Brand":"Zulay Kitchen","Price  US$":"14.99","ASIN Sales":"9591","ASIN Revenue":"117557","Ratings":"4.4","Review Count":"28614","Fulfillment":"FBA"},
+    {"ASIN":"B098BNQ44M","Brand":"KITESSENSU","Price  US$":"11.99","ASIN Sales":"10085","ASIN Revenue":"115614","Ratings":"4.6","Review Count":"15588","Fulfillment":"FBA"},
+    {"ASIN":"B00HHLNRVE","Brand":"OXO","Price  US$":"17.99","ASIN Sales":"5200","ASIN Revenue":"93548","Ratings":"4.7","Review Count":"22100","Fulfillment":"FBA"},
+    {"ASIN":"B08WHLDMNX","Brand":"Alpha Grillers","Price  US$":"12.97","ASIN Sales":"4800","ASIN Revenue":"62256","Ratings":"4.5","Review Count":"18900","Fulfillment":"FBA"},
+    {"ASIN":"B0DJ28XG7Z","Brand":"Dreamfarm","Price  US$":"19.95","ASIN Sales":"3200","ASIN Revenue":"63840","Ratings":"4.3","Review Count":"8500","Fulfillment":"FBA"},
+    {"ASIN":"B09QBDRCRK","Brand":"Vivaloo","Price  US$":"9.99","ASIN Sales":"2800","ASIN Revenue":"27972","Ratings":"4.2","Review Count":"5400","Fulfillment":"FBA"},
+    {"ASIN":"B0CTW96FZ8","Brand":"Gorilla Grip","Price  US$":"13.99","ASIN Sales":"2400","ASIN Revenue":"33576","Ratings":"4.4","Review Count":"3200","Fulfillment":"FBA"},
+    {"ASIN":"B092D1DP4D","Brand":"Orblue","Price  US$":"10.97","ASIN Sales":"2100","ASIN Revenue":"23037","Ratings":"4.5","Review Count":"12800","Fulfillment":"FBA"},
+    {"ASIN":"B0DG3SL8ZN","Brand":"KitchenAid","Price  US$":"14.99","ASIN Sales":"1800","ASIN Revenue":"26982","Ratings":"4.6","Review Count":"950","Fulfillment":"FBA"},
+    {"ASIN":"B07F7KPVMH","Brand":"Benchusch","Price  US$":"16.95","ASIN Sales":"1500","ASIN Revenue":"25425","Ratings":"4.3","Review Count":"7200","Fulfillment":"FBA"}
+  ];
+
+  // Cerebro keyword rows: [phrase, sv, td, spRankAvg, spRankCount, coRankAvg, rankingComps, mainRank, [compRanks x9]]
+  const kwRows=[
+    ["garlic press",117898,38,19,8,8.6,9,3,[1,5,7,9,10,16,19,24,28]],
+    ["garlic mincer",31236,23,17,9,29.4,9,5,[2,4,9,14,18,22,null,35,null]],
+    ["garlic chopper",12450,8,12,6,22.1,9,2,[4,6,11,15,23,28,32,null,38]],
+    ["garlic crusher",7274,16,5,7,14.0,9,1,[3,7,8,12,16,19,22,29,null]],
+    ["garlic peeler",5670,5,9,5,14.8,8,4,[2,8,12,null,18,26,null,38,null]],
+    ["garlic press rocker",6414,33,22,3,75.9,9,8,[3,5,null,12,18,25,32,null,null]],
+    ["garlic press stainless steel",4654,4,13,7,17.2,9,2,[6,8,14,19,24,28,null,32,null]],
+    ["oxo garlic press",3380,1,7,8,17.7,9,5,[1,3,8,12,17,21,28,null,35]],
+    ["stainless steel garlic press",2742,14,16,7,20.0,9,4,[8,12,16,22,28,null,34,null,42]],
+    ["mincer",2070,27,14,7,18.4,9,6,[4,9,13,19,24,31,null,42,null]],
+    ["garlic press easy clean",1786,0,6,5,19.0,9,3,[5,9,12,18,24,32,null,null,null]],
+    ["garlic crusher stainless steel",1540,0,5,6,15.7,9,2,[4,7,11,16,22,null,null,null,null]],
+    ["garlic presses",1452,0,7,9,16.6,9,5,[2,8,12,16,21,28,null,null,null]],
+    ["garlic smasher",1366,1,25,4,15.2,9,8,[5,12,18,24,null,null,null,null,null]],
+    ["garlic tool",890,2,18,4,35.2,7,12,[6,16,24,32,null,null,null,null,null]]
+  ];
+
+  cerebroRaw=kwRows.map(([phrase,sv,td,spRankAvg,spRankCount,coRankAvg,rankingComps,mainRank,compRanks])=>{
+    const row={
+      "Keyword Phrase":phrase,
+      "Search Volume":String(sv),
+      "Title Density":String(td),
+      "Sponsored Rank (Avg)":String(spRankAvg),
+      "Sponsored Rank (Count)":String(spRankCount),
+      "Competitor Rank (Avg)":String(coRankAvg),
+      "Ranking Competitors (Count)":String(rankingComps),
+      "Position (Rank)":mainRank!=null?String(mainRank):""
+    };
+    DEMO_COMP_ASINS.forEach((asin,i)=>{row[asin]=compRanks[i]!=null?String(compRanks[i]):"";});
+    return row;
   });
+
+  // Update upload box UI
+  markDone('sc-xray','dz-xray','dz-xray-icon','dz-xray-name','demo-xray.csv','10 products');
+  markDone('sc-cerebro','dz-cerebro','dz-cerebro-icon','dz-cerebro-name','demo-cerebro.csv','15 keywords');
+  showAsinPreview();
+
+  // Enable run button + show demo banner
+  const btnRun=document.getElementById('btn-run');
+  if(btnRun)btnRun.disabled=false;
+  document.getElementById('demo-banner').style.display='flex';
+
+  // Mark tool as used
+  localStorage.setItem('rf_has_used_tool','true');
+
+  processData();
 }
-function showUnlockForm(){
-  document.getElementById('unlock-form').style.display='flex';
-  document.getElementById('teaser-cta-wrap').style.display='none';
-  document.getElementById('teaser-email').focus();
+
+function scrollToUpload(){
+  document.getElementById('sc-xray').scrollIntoView({behavior:'smooth',block:'start'});
 }
-function submitUnlock(){
-  const inp=document.getElementById('teaser-email');
-  const email=inp.value.trim();
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
-    inp.style.borderColor='#dc2626';inp.focus();return;
-  }
-  inp.style.borderColor='';
-  const btn=inp.nextElementSibling;
-  btn.textContent='Unlocking...';btn.disabled=true;
-  const leads=JSON.parse(localStorage.getItem('rf_leads')||'[]');
-  leads.push({email,ts:Date.now(),src:'teaser'});
-  localStorage.setItem('rf_leads',JSON.stringify(leads));
-  sessionStorage.setItem('rf_session_email',email);
-  localStorage.setItem('rf_email',email);
-  localStorage.setItem('rf_unlocked','true');
-  // Unlock immediately — don't wait for network
-  doUnlockTable();
-  // Fire-and-forget to Google Sheets
-  console.log('Email gate: sending email:', email);
-  fetch('https://script.google.com/macros/s/AKfycbxFcRoZpkbhFv82umLLgrtYuUzW1usT5VWApx2lp_F6uAhn0ZKfunYKdSScl_swZlN8/exec',{
-    method:'POST',mode:'no-cors',
-    headers:{'Content-Type':'text/plain'},
-    body:JSON.stringify({type:'email',email:email})
-  }).then(function(){
-    console.log('Email gate: sent successfully');
-  }).catch(function(err){
-    console.log('Email gate: fetch error',err);
-  });
+
+// ── Mobile menu ──
+function toggleMobileMenu(){
+  document.getElementById('mobile-overlay').classList.toggle('open');
+  document.body.style.overflow=document.getElementById('mobile-overlay').classList.contains('open')?'hidden':'';
 }
-function doUnlockTable(){
-  teaserActive=false;
-  // Restore full scroll height before re-rendering
-  document.getElementById('tscroll').style.height='';
-  const wall=document.getElementById('teaser-wall');
-  wall.style.transition='opacity .35s';
-  wall.style.opacity='0';
-  setTimeout(()=>{wall.style.display='none';wall.style.opacity='';wall.style.transition='';},380);
-  // Re-render with all rows
-  const el=document.getElementById('tscroll');
-  renderVirt(el.scrollTop,el.clientHeight);
-  requestAnimationFrame(updateScrollbar);
-  repositionBottomElements();
+function closeMobileMenu(){
+  document.getElementById('mobile-overlay').classList.remove('open');
+  document.body.style.overflow='';
 }
 
 // ── Exit intent ──
@@ -1551,6 +1647,7 @@ window.addEventListener('DOMContentLoaded',()=>{
   initScrollbar('rail-bot','thumb-bot');
   window.addEventListener('resize',updateScrollbar);
   window.addEventListener('resize',repositionBottomElements);
+  setTimeout(showWelcomeModal, 2500);
 });
 </script>
 
